@@ -2,6 +2,7 @@
 
 #include "Common.h"
 #include "PlanarObject.h"
+#include "Math/GeometricAlgebra/Vector2D.h"
 
 namespace PlanarPhysics
 {
@@ -25,6 +26,8 @@ namespace PlanarPhysics
 
 		void Clear();
 		void Tick();
+
+		Vector2D accelerationDueToGravity;
 
 	private:
 

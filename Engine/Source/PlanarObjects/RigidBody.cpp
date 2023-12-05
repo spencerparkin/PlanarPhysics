@@ -1,4 +1,5 @@
 #include "RigidBody.h"
+#include "Engine.h"
 #include "Math/GeometricAlgebra/Rotor2D.h"
 #include "Math/Utilities/BoundingBox.h"
 
@@ -155,9 +156,12 @@ const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
 	this->worldVertexArrayValid = false;
 }
 
-/*virtual*/ void RigidBody::AccumulateForces()
+/*virtual*/ void RigidBody::AccumulateForces(const Engine* engine)
 {
-	
+	if ((this->flags & PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY) != 0)
+	{
+		this->netForce += engine->accelerationDueToGravity * this->mass;
+	}
 }
 
 /*virtual*/ void RigidBody::AdvanceBegin()

@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include "Engine.h"
 
 using namespace PlanarPhysics;
 
@@ -45,9 +46,12 @@ double Ball::Mass() const
 	this->position += this->velocity * deltaTime;
 }
 
-/*virtual*/ void Ball::AccumulateForces()
+/*virtual*/ void Ball::AccumulateForces(const Engine* engine)
 {
-	// TODO: this->netForce += gravityAccel * this->Mass();
+	if ((this->flags & PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY) != 0)
+	{
+		this->netForce += engine->accelerationDueToGravity * this->Mass();
+	}
 
 	if (this->inRestingContact)
 	{

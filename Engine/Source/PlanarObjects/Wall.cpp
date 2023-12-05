@@ -31,7 +31,7 @@ Wall::Wall()
 	// Walls don't move.
 }
 
-/*virtual*/ void Wall::AccumulateForces()
+/*virtual*/ void Wall::AccumulateForces(const Engine* engine)
 {
 	// Walls have infinite mass and so they just can't be moved.
 }

@@ -17,6 +17,7 @@
 
 #include <math.h>
 #include <time.h>
+#include <stdint.h>
 #include <vector>
 #include <map>
 #include <set>

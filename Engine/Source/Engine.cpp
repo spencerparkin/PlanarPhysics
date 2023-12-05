@@ -11,6 +11,7 @@ using namespace PlanarPhysics;
 
 Engine::Engine()
 {
+	this->accelerationDueToGravity = Vector2D(0.0, -9.8);
 	this->currentTime = 0.0;
 	this->maxDeltaTime = 0.00025;
 	this->planarObjectArray = new std::vector<PlanarObject*>();
@@ -76,7 +77,7 @@ void Engine::Tick()
 			object->AdvanceBegin();
 
 		for (PlanarObject* object : *this->planarObjectArray)
-			object->AccumulateForces();
+			object->AccumulateForces(this);
 
 		for (PlanarObject* object : *this->planarObjectArray)
 			object->Integrate(deltaTime);

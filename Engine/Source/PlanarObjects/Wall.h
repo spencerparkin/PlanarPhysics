@@ -19,7 +19,7 @@ namespace PlanarPhysics
 	protected:
 		virtual Type GetType() const override;
 		virtual void Integrate(double deltaTime) override;
-		virtual void AccumulateForces() override;
+		virtual void AccumulateForces(const Engine* engine) override;
 
 	public:
 		Vector2D Normal() const;

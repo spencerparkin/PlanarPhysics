@@ -33,6 +33,8 @@ bool App::Setup()
 
 	SDL_SetWindowTitle(drawHelper.window, "Planar Physics Engine Demo");
 
+	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
+
 	RenderWall* bottomWall = this->engine.AddPlanarObject<RenderWall>();
 	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
 	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
@@ -103,11 +105,13 @@ bool App::HandleKeyboard()
 						{
 							RenderBall* ball = this->engine.AddPlanarObject<RenderBall>();
 							ball->position = Vector2D(0.0, 15.0);
-							ball->velocity = Random::Vector(2.0, 4.0);
+							ball->radius = Random::Number(3.0, 7.0);
+							ball->velocity = Random::Vector(5.0, 8.0);
 							ball->density = 1.0;
 							ball->r = Random::Integer(0, 255);
 							ball->g = Random::Integer(0, 255);
 							ball->b = Random::Integer(0, 255);
+							ball->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 							break;
 						}
 						case SDL_SCANCODE_R:
@@ -120,6 +124,7 @@ bool App::HandleKeyboard()
 							body->r = Random::Integer(0, 255);
 							body->g = Random::Integer(0, 255);
 							body->b = Random::Integer(0, 255);
+							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
 							pointArray.push_back(Vector2D(-3.0, -1.0));
