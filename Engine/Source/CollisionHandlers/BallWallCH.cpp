@@ -27,12 +27,12 @@ BallWallCH::BallWallCH()
 	}
 
 	Vector2D nearestPoint = wall->lineSeg.NearestPoint(ball->position);
-	Vector2D nearstPointToBall = nearestPoint - ball->position;
-	double distance = nearstPointToBall.Magnitude();
+	Vector2D direction = ball->position - nearestPoint;
+	double distance = direction.Magnitude();
 	if (distance >= ball->radius)
 		return;
 
-	Vector2D contactNormal = nearstPointToBall.Normalized();
+	Vector2D contactNormal = direction.Normalized();
 	ball->position += contactNormal * (ball->radius - distance);
 
 	double coeficientOfRestitution = 0.9;	// This ranges 0 to 1.
