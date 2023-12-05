@@ -4,6 +4,8 @@
 
 namespace PlanarPhysics
 {
+	class Rotor2D;
+
 	class PLANAR_PHYSICS_API PScalar2D
 	{
 	public:
@@ -13,10 +15,14 @@ namespace PlanarPhysics
 		virtual ~PScalar2D();
 
 		void operator=(const PScalar2D& pscalar);
+		void operator*=(double scalar);
+		void operator+=(const PScalar2D& pscalar);
+		void operator-=(const PScalar2D& pscalar);
 
 		PScalar2D Reversed() const;
 		PScalar2D Inverted() const;
 		PScalar2D Magnitude() const;
+		Rotor2D Exponent() const;
 
 		double z;
 	};

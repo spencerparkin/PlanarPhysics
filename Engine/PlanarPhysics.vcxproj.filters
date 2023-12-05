@@ -11,6 +11,15 @@
     <Filter Include="Source\Math\GeometricAlgebra">
       <UniqueIdentifier>{2482523e-744c-4d6d-bb65-0df96b0df8c1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Math\Utilities">
+      <UniqueIdentifier>{22d10980-8756-4cb2-94e6-1b9eb67a59ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\PlanarObjects">
+      <UniqueIdentifier>{dc7aa654-405f-4f3a-b96a-26ba55c29933}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\CollisionHandlers">
+      <UniqueIdentifier>{08a7d2d6-fb0a-4aa0-b380-bd2b9687c9e5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Common.h">
@@ -31,6 +40,36 @@
     <ClInclude Include="Source\Math\GeometricAlgebra\Vector2D.h">
       <Filter>Source\Math\GeometricAlgebra</Filter>
     </ClInclude>
+    <ClInclude Include="Source\PlanarObject.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\BoundingBox.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanarObjects\Ball.h">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanarObjects\RigidBody.h">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanarObjects\Wall.h">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionHandler.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionHandlers\BallBallCH.h">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionHandlers\BallWallCH.h">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\LineSegment.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CollisionHandlers\RigidBodyWallCH.h">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp">
@@ -47,6 +86,36 @@
     </ClCompile>
     <ClCompile Include="Source\Math\GeometricAlgebra\PScalar2D.cpp">
       <Filter>Source\Math\GeometricAlgebra</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanarObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\BoundingBox.cpp">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanarObjects\Ball.cpp">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanarObjects\RigidBody.cpp">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanarObjects\Wall.cpp">
+      <Filter>Source\PlanarObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandlers\BallBallCH.cpp">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandlers\BallWallCH.cpp">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\LineSegment.cpp">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandlers\RigidBodyWallCH.cpp">
+      <Filter>Source\CollisionHandlers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

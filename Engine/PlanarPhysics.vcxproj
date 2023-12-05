@@ -19,19 +19,39 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\CollisionHandler.h" />
+    <ClInclude Include="Source\CollisionHandlers\BallBallCH.h" />
+    <ClInclude Include="Source\CollisionHandlers\BallWallCH.h" />
+    <ClInclude Include="Source\CollisionHandlers\RigidBodyWallCH.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Engine.h" />
     <ClInclude Include="Source\Math\GeometricAlgebra\Multivector2D.h" />
     <ClInclude Include="Source\Math\GeometricAlgebra\PScalar2D.h" />
     <ClInclude Include="Source\Math\GeometricAlgebra\Rotor2D.h" />
     <ClInclude Include="Source\Math\GeometricAlgebra\Vector2D.h" />
+    <ClInclude Include="Source\Math\Utilities\BoundingBox.h" />
+    <ClInclude Include="Source\Math\Utilities\LineSegment.h" />
+    <ClInclude Include="Source\PlanarObject.h" />
+    <ClInclude Include="Source\PlanarObjects\Ball.h" />
+    <ClInclude Include="Source\PlanarObjects\RigidBody.h" />
+    <ClInclude Include="Source\PlanarObjects\Wall.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\CollisionHandler.cpp" />
+    <ClCompile Include="Source\CollisionHandlers\BallBallCH.cpp" />
+    <ClCompile Include="Source\CollisionHandlers\BallWallCH.cpp" />
+    <ClCompile Include="Source\CollisionHandlers\RigidBodyWallCH.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Multivector2D.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\PScalar2D.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Rotor2D.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Vector2D.cpp" />
+    <ClCompile Include="Source\Math\Utilities\BoundingBox.cpp" />
+    <ClCompile Include="Source\Math\Utilities\LineSegment.cpp" />
+    <ClCompile Include="Source\PlanarObject.cpp" />
+    <ClCompile Include="Source\PlanarObjects\Ball.cpp" />
+    <ClCompile Include="Source\PlanarObjects\RigidBody.cpp" />
+    <ClCompile Include="Source\PlanarObjects\Wall.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

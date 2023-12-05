@@ -1,4 +1,5 @@
 #include "PScalar2D.h"
+#include "Rotor2D.h"
 
 using namespace PlanarPhysics;
 
@@ -26,6 +27,21 @@ void PScalar2D::operator=(const PScalar2D& pscalar)
 	this->z = pscalar.z;
 }
 
+void PScalar2D::operator*=(double scalar)
+{
+	this->z *= scalar;
+}
+
+void PScalar2D::operator+=(const PScalar2D& pscalar)
+{
+	this->z += pscalar.z;
+}
+
+void PScalar2D::operator-=(const PScalar2D& pscalar)
+{
+	this->z -= pscalar.z;
+}
+
 PScalar2D PScalar2D::Reversed() const
 {
 	return PScalar2D(
@@ -41,6 +57,14 @@ PScalar2D PScalar2D::Inverted() const
 PScalar2D PScalar2D::Magnitude() const
 {
 	return ::sqrt(this->z * this->z);
+}
+
+Rotor2D PScalar2D::Exponent() const
+{
+	return Rotor2D(
+		::cos(this->z),
+		::sin(this->z)
+	);
 }
 
 namespace PlanarPhysics

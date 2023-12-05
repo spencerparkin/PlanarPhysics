@@ -16,7 +16,11 @@ namespace PlanarPhysics
 		virtual ~Vector2D();
 
 		void operator=(const Vector2D& vector);
-		
+		void operator*=(double scalar);
+		void operator/=(double scalar);
+		void operator+=(const Vector2D& vector);
+		void operator-=(const Vector2D& vector);
+
 		Vector2D Inverted() const;
 		Vector2D Normalized() const;
 		double Magnitude() const;
@@ -33,4 +37,6 @@ namespace PlanarPhysics
 	PLANAR_PHYSICS_API Rotor2D operator/(const Vector2D& vector1, const Vector2D& vector2);
 	PLANAR_PHYSICS_API double operator|(const Vector2D& vector1, const Vector2D& vector2);
 	PLANAR_PHYSICS_API PScalar2D operator^(const Vector2D& vector1, const Vector2D& vector2);
+	PLANAR_PHYSICS_API Vector2D operator*(const Vector2D& vector, const Rotor2D& rotor);
+	PLANAR_PHYSICS_API Vector2D operator*(const Vector2D& vector, const PScalar2D& pscalar);
 }

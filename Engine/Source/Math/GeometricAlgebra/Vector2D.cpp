@@ -32,6 +32,30 @@ void Vector2D::operator=(const Vector2D& vector)
 	this->y = vector.y;
 }
 
+void Vector2D::operator*=(double scalar)
+{
+	this->x *= scalar;
+	this->y *= scalar;
+}
+
+void Vector2D::operator/=(double scalar)
+{
+	this->x /= scalar;
+	this->y /= scalar;
+}
+
+void Vector2D::operator+=(const Vector2D& vector)
+{
+	this->x += vector.x;
+	this->y += vector.y;
+}
+
+void Vector2D::operator-=(const Vector2D& vector)
+{
+	this->x -= vector.x;
+	this->y -= vector.y;
+}
+
 Vector2D Vector2D::Inverted() const
 {
 	return *this / (*this | *this);
@@ -111,6 +135,22 @@ namespace PlanarPhysics
 	{
 		return PScalar2D(
 			vector1.x * vector2.y - vector1.y * vector2.x
+		);
+	}
+
+	Vector2D operator*(const Vector2D& vector, const Rotor2D& rotor)
+	{
+		return Vector2D(
+			rotor.w * vector.x - rotor.z * vector.y,
+			rotor.w * vector.y + rotor.z * vector.x
+		);
+	}
+
+	Vector2D operator*(const Vector2D& vector, const PScalar2D& pscalar)
+	{
+		return Vector2D(
+			vector.x * pscalar.z,
+			-vector.y * pscalar.z
 		);
 	}
 }
