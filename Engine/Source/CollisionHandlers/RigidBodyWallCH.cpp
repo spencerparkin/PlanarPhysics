@@ -33,8 +33,8 @@ RigidBodyWallCH::RigidBodyWallCH()
 	for (const Vector2D& vertex : *body->worldVertexArray)
 	{
 		Vector2D nearestPoint = wall->lineSeg.NearestPoint(vertex);
-		Vector2D nearestPointToVertex = vertex - nearestPoint;
-		double penetrationDistance = nearestPointToVertex | contactNormal;
+		Vector2D direction = vertex - nearestPoint;
+		double penetrationDistance = direction | contactNormal;
 		if (penetrationDistance >= 0.0)
 			continue;
 
@@ -48,7 +48,7 @@ RigidBodyWallCH::RigidBodyWallCH()
 		{
 			double coeficientOfRestitution = 0.7;
 
-			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass + (r ^ contactNormal) * (r ^ contactNormal) / body->inertia);
+			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contactNormal) * (r ^ contactNormal) / body->inertia);
 
 			Vector2D impulse = j * contactNormal;
 			body->velocity += impulse / body->mass;

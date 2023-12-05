@@ -120,17 +120,17 @@ bool App::HandleKeyboard()
 							body->position = Vector2D(0.0, 15.0);
 							body->velocity = Random::Vector(2.0, 4.0);
 							body->orientation.z = Random::Number(0.0, 2.0 * PLNR_PHY_PI);
-							body->angularVelocity.z = Random::Number(-PLNR_PHY_PI / 3.0, PLNR_PHY_PI / 3.0);
+							body->angularVelocity.z = Random::Number(-PLNR_PHY_PI, PLNR_PHY_PI);
 							body->r = Random::Integer(0, 255);
 							body->g = Random::Integer(0, 255);
 							body->b = Random::Integer(0, 255);
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-							pointArray.push_back(Vector2D(-3.0, -1.0));
-							pointArray.push_back(Vector2D(3.0, -1.0));
-							pointArray.push_back(Vector2D(3.0, 1.0));
-							pointArray.push_back(Vector2D(-3.0, 1.0));
+							pointArray.push_back(Vector2D(-10.0, -6.0));
+							pointArray.push_back(Vector2D(10.0, -6.0));
+							pointArray.push_back(Vector2D(10.0, 6.0));
+							pointArray.push_back(Vector2D(-10.0, 6.0));
 
 							body->MakeShape(pointArray, 1.0);
 							break;

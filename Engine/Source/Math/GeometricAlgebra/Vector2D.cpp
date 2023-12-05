@@ -149,8 +149,8 @@ namespace PlanarPhysics
 	Vector2D operator*(const Vector2D& vector, const PScalar2D& pscalar)
 	{
 		return Vector2D(
-			vector.x * pscalar.z,
-			-vector.y * pscalar.z
+			-vector.y * pscalar.z,
+			vector.x * pscalar.z
 		);
 	}
 }

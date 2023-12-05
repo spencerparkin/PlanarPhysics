@@ -38,5 +38,5 @@ Wall::Wall()
 
 Vector2D Wall::Normal() const
 {
-	return ((this->lineSeg.vertexA - this->lineSeg.vertexB) * PScalar2D(1.0)).Normalized();
+	return ((this->lineSeg.vertexB - this->lineSeg.vertexA) * PScalar2D(1.0)).Normalized();
 }
