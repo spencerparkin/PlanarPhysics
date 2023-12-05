@@ -2,6 +2,9 @@
 
 RenderObject::RenderObject()
 {
+	this->r = 255;
+	this->g = 255;
+	this->b = 255;
 }
 
 /*virtual*/ RenderObject::~RenderObject()

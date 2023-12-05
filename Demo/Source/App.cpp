@@ -50,6 +50,8 @@ bool App::Setup()
 
 bool App::Shutdown()
 {
+	this->engine.Clear();
+
 	SDL_DestroyRenderer(this->drawHelper.renderer);
 	SDL_DestroyWindow(this->drawHelper.window);
 	SDL_Quit();
@@ -61,6 +63,8 @@ int App::Run()
 {
 	while (this->HandleKeyboard())
 	{
+		this->engine.Tick();
+
 		this->drawHelper.BeginRender();
 
 		const std::vector<PlanarObject*>& planarObjectArray = this->engine.GetPlanarObjectArray();

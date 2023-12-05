@@ -2,6 +2,7 @@
 #include "CollisionHandler.h"
 #include "CollisionHandlers/BallBallCH.h"
 #include "CollisionHandlers/BallWallCH.h"
+#include "CollisionHandlers/RigidBodyWallCH.h"
 #include "PlanarObjects/Ball.h"
 #include "PlanarObjects/Wall.h"
 #include "PlanarObjects/RigidBody.h"
@@ -20,6 +21,8 @@ Engine::Engine()
 	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Ball::StaticType()] = new BallBallCH();
 	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Wall::StaticType()] = new BallWallCH();
 	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)Ball::StaticType()] = new BallWallCH();
+	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)Wall::StaticType()] = new RigidBodyWallCH();
+	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)RigidBody::StaticType()] = new RigidBodyWallCH();
 }
 
 /*virtual*/ Engine::~Engine()
