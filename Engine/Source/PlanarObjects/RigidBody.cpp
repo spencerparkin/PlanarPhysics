@@ -134,6 +134,13 @@ void RigidBody::UpdateWorldVertexArrayIfNeeded() const
 	}
 }
 
+const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
+{
+	this->UpdateWorldVertexArrayIfNeeded();
+	
+	return *this->worldVertexArray;
+}
+
 /*virtual*/ void RigidBody::Integrate(double deltaTime)
 {
 	Vector2D acceleration = this->netForce / this->mass;

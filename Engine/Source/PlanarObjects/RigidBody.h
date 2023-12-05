@@ -28,7 +28,8 @@ namespace PlanarPhysics
 		void MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity);
 		bool ContainsPoint(const Vector2D& point) const;
 		void UpdateWorldVertexArrayIfNeeded() const;
-	
+		const std::vector<Vector2D>& GetWorldVertexArray() const;
+
 		Vector2D position;
 		PScalar2D orientation;
 		Vector2D velocity;

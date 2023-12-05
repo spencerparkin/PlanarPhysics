@@ -16,10 +16,12 @@ namespace PlanarPhysics
 		template<typename T>
 		T* AddPlanarObject()
 		{
-			PlanarObject* object = T::Create();
+			T* object = T::Create();
 			this->planarObjectArray->push_back(object);
 			return object;
 		}
+
+		const std::vector<PlanarObject*>& GetPlanarObjectArray() const;
 
 		void Clear();
 		void Tick();

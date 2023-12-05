@@ -5,7 +5,7 @@
 
 namespace PlanarPhysics
 {
-	class BoundingBox
+	class PLANAR_PHYSICS_API BoundingBox
 	{
 	public:
 		BoundingBox();
@@ -35,6 +35,7 @@ namespace PlanarPhysics
 		Vector2D PointFromUVs(const Vector2D& uvs) const;
 		void ExpandToIncludePoint(const Vector2D& point);
 		Vector2D Center() const;
+		Vector2D Transform(const Vector2D& point, const BoundingBox& pointSpace) const;
 
 		Vector2D min, max;
 	};

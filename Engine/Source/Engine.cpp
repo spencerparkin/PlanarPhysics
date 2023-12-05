@@ -34,6 +34,11 @@ Engine::Engine()
 			delete this->collisionHandlerMatrix[i][j];
 }
 
+const std::vector<PlanarObject*>& Engine::GetPlanarObjectArray() const
+{
+	return *this->planarObjectArray;
+}
+
 void Engine::Clear()
 {
 	for (PlanarObject* object : *this->planarObjectArray)

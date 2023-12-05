@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.33214.272
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlanarPhysics", "Engine\PlanarPhysics.vcxproj", "{118E8064-AE9E-4DDA-ACC2-CBDEAF39D585}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demo", "Demo\Demo.vcxproj", "{D4C2FC77-C524-4B25-BB33-2A65770A137C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{118E8064-AE9E-4DDA-ACC2-CBDEAF39D585} = {118E8064-AE9E-4DDA-ACC2-CBDEAF39D585}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +26,14 @@ Global
 		{118E8064-AE9E-4DDA-ACC2-CBDEAF39D585}.Release|x64.Build.0 = Release|x64
 		{118E8064-AE9E-4DDA-ACC2-CBDEAF39D585}.Release|x86.ActiveCfg = Release|Win32
 		{118E8064-AE9E-4DDA-ACC2-CBDEAF39D585}.Release|x86.Build.0 = Release|Win32
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Debug|x64.ActiveCfg = Debug|x64
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Debug|x64.Build.0 = Debug|x64
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Debug|x86.ActiveCfg = Debug|Win32
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Debug|x86.Build.0 = Debug|Win32
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Release|x64.ActiveCfg = Release|x64
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Release|x64.Build.0 = Release|x64
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Release|x86.ActiveCfg = Release|Win32
+		{D4C2FC77-C524-4B25-BB33-2A65770A137C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

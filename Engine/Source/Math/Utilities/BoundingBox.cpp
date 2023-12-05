@@ -24,6 +24,11 @@ BoundingBox::BoundingBox(const Vector2D& min, const Vector2D& max)
 {
 }
 
+Vector2D BoundingBox::Transform(const Vector2D& point, const BoundingBox& pointSpace) const
+{
+	return this->PointFromUVs(pointSpace.PointToUVs(point));
+}
+
 bool BoundingBox::IsValid() const
 {
 	return this->min.x <= this->max.x && this->min.y <= this->max.y;
