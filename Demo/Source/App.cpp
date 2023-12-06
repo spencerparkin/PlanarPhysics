@@ -35,17 +35,7 @@ bool App::Setup()
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 
-	RenderWall* bottomWall = this->engine.AddPlanarObject<RenderWall>();
-	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
-	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
-
-	RenderWall* leftWall = this->engine.AddPlanarObject<RenderWall>();
-	leftWall->lineSeg.vertexA = Vector2D(-49.5, 49.5);
-	leftWall->lineSeg.vertexB = Vector2D(-49.5, -49.5);
-
-	RenderWall* rightWall = this->engine.AddPlanarObject<RenderWall>();
-	rightWall->lineSeg.vertexA = Vector2D(49.5, -49.5);
-	rightWall->lineSeg.vertexB = Vector2D(49.5, 49.5);
+	this->MakeWalls();
 
 	return true;
 }
@@ -59,6 +49,21 @@ bool App::Shutdown()
 	SDL_Quit();
 
 	return true;
+}
+
+void App::MakeWalls()
+{
+	RenderWall* bottomWall = this->engine.AddPlanarObject<RenderWall>();
+	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
+	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
+
+	RenderWall* leftWall = this->engine.AddPlanarObject<RenderWall>();
+	leftWall->lineSeg.vertexA = Vector2D(-49.5, 49.5);
+	leftWall->lineSeg.vertexB = Vector2D(-49.5, -49.5);
+
+	RenderWall* rightWall = this->engine.AddPlanarObject<RenderWall>();
+	rightWall->lineSeg.vertexA = Vector2D(49.5, -49.5);
+	rightWall->lineSeg.vertexB = Vector2D(49.5, 49.5);
 }
 
 int App::Run()
@@ -127,12 +132,21 @@ bool App::HandleKeyboard()
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-							pointArray.push_back(Vector2D(-10.0, -6.0));
-							pointArray.push_back(Vector2D(10.0, -6.0));
-							pointArray.push_back(Vector2D(10.0, 6.0));
-							pointArray.push_back(Vector2D(-10.0, 6.0));
+							int i = Random::Integer(4, 8);
+							for (int j = 0; j < i; j++)
+								pointArray.push_back(Random::Vector(5.0, 10.0));
 
-							body->MakeShape(pointArray, 1.0);
+							if (!body->MakeShape(pointArray, 1.0))
+							{
+								fprintf(stderr, "Failed to make shape!");
+							}
+
+							break;
+						}
+						case SDL_SCANCODE_C:
+						{
+							this->engine.Clear();
+							this->MakeWalls();
 							break;
 						}
 					}

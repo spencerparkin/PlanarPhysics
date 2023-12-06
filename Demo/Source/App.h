@@ -18,6 +18,7 @@ public:
 private:
 
 	bool HandleKeyboard();
+	void MakeWalls();
 
 	DrawHelper drawHelper;
 	PlanarPhysics::Engine engine;
