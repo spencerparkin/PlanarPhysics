@@ -50,3 +50,15 @@ double LineSegment::DistanceTo(const Vector2D& point) const
 {
 	return (this->NearestPoint(point) - point).Magnitude();
 }
+
+Vector2D& LineSegment::operator[](int i)
+{
+	if (i % 2 == 0)
+		return this->vertexA;
+	return this->vertexB;
+}
+
+const Vector2D& LineSegment::operator[](int i) const
+{
+	return (*const_cast<LineSegment*>(this))[i];
+}

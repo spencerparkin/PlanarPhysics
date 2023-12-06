@@ -26,11 +26,11 @@ RigidBodyWallCH::RigidBodyWallCH()
 			return;
 	}
 
-	body->UpdateWorldVertexArrayIfNeeded();
+	body->UpdateWorldPolygonIfNeeded();
 
 	Vector2D contactNormal = wall->Normal();
 
-	for (const Vector2D& vertex : *body->worldVertexArray)
+	for (const Vector2D& vertex : body->GetWorldPolygon().GetVertexArray())
 	{
 		Vector2D nearestPoint = wall->lineSeg.NearestPoint(vertex);
 		Vector2D direction = vertex - nearestPoint;

@@ -18,6 +18,9 @@ namespace PlanarPhysics
 		Vector2D NearestPoint(const Vector2D& point) const;
 		double Length() const;
 
+		Vector2D& operator[](int i);
+		const Vector2D& operator[](int i) const;
+
 		Vector2D vertexA, vertexB;
 	};
 }

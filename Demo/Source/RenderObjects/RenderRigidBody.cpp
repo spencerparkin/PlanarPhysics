@@ -18,7 +18,7 @@ RenderRigidBody::RenderRigidBody()
 
 /*virtual*/ void RenderRigidBody::Render(DrawHelper& drawHelper) const
 {
-	const std::vector<Vector2D>& worldVertexArray = this->GetWorldVertexArray();
+	const std::vector<Vector2D>& worldVertexArray = this->GetWorldPolygon().GetVertexArray();
 
 	for (int i = 0; i < (signed)worldVertexArray.size(); i++)
 	{

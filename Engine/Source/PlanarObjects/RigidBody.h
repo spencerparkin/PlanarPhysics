@@ -3,6 +3,7 @@
 #include "PlanarObject.h"
 #include "Math/GeometricAlgebra/Vector2D.h"
 #include "Math/GeometricAlgebra/PScalar2D.h"
+#include "Math/Utilities/ConvexPolygon.h"
 
 namespace PlanarPhysics
 {
@@ -10,6 +11,7 @@ namespace PlanarPhysics
 	{
 		friend class Engine;
 		friend class RigidBodyWallCH;
+		friend class RBodyRBodyCH;
 
 	public:
 		RigidBody();
@@ -25,10 +27,10 @@ namespace PlanarPhysics
 		virtual void AdvanceBegin() override;
 
 	public:
-		void MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity);
+		bool MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity);
 		bool ContainsPoint(const Vector2D& point) const;
-		void UpdateWorldVertexArrayIfNeeded() const;
-		const std::vector<Vector2D>& GetWorldVertexArray() const;
+		void UpdateWorldPolygonIfNeeded() const;
+		const ConvexPolygon& GetWorldPolygon() const;
 
 		Vector2D position;
 		PScalar2D orientation;
@@ -36,14 +38,16 @@ namespace PlanarPhysics
 		PScalar2D angularVelocity;
 
 	private:
+		bool PointPenetratesConvexPolygon(const Vector2D& point, Vector2D& nearestSurfacePoint, Vector2D& nearestSurfaceNormal) const;
+
 		Vector2D netForce;
 		PScalar2D netTorque;
 		double inertia;
 		double mass;
 		bool inRestingContact;
 
-		std::vector<Vector2D>* localVertexArray;
-		mutable std::vector<Vector2D>* worldVertexArray;
-		mutable bool worldVertexArrayValid;
+		ConvexPolygon localPolygon;
+		mutable ConvexPolygon worldPolygon;
+		mutable bool worldPolygonValid;
 	};
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Math/GeometricAlgebra/Vector2D.h"
 
 namespace PlanarPhysics
 {
@@ -13,5 +14,11 @@ namespace PlanarPhysics
 		virtual ~CollisionHandler();
 
 		virtual void HandleCollision(PlanarObject* objectA, PlanarObject* objectB) = 0;
+
+		struct Contact
+		{
+			Vector2D normal;
+			Vector2D point;
+		};
 	};
 }

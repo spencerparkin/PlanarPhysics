@@ -70,6 +70,18 @@
     <ClInclude Include="Source\CollisionHandlers\RigidBodyWallCH.h">
       <Filter>Source\CollisionHandlers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\CollisionHandlers\RBodyRBodyCH.h">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\Line.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\Ray.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\ConvexPolygon.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp">
@@ -116,6 +128,18 @@
     </ClCompile>
     <ClCompile Include="Source\CollisionHandlers\RigidBodyWallCH.cpp">
       <Filter>Source\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandlers\RBodyRBodyCH.cpp">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\Line.cpp">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\Ray.cpp">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\ConvexPolygon.cpp">
+      <Filter>Source\Math\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

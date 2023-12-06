@@ -22,6 +22,7 @@
     <ClInclude Include="Source\CollisionHandler.h" />
     <ClInclude Include="Source\CollisionHandlers\BallBallCH.h" />
     <ClInclude Include="Source\CollisionHandlers\BallWallCH.h" />
+    <ClInclude Include="Source\CollisionHandlers\RBodyRBodyCH.h" />
     <ClInclude Include="Source\CollisionHandlers\RigidBodyWallCH.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Engine.h" />
@@ -30,7 +31,10 @@
     <ClInclude Include="Source\Math\GeometricAlgebra\Rotor2D.h" />
     <ClInclude Include="Source\Math\GeometricAlgebra\Vector2D.h" />
     <ClInclude Include="Source\Math\Utilities\BoundingBox.h" />
+    <ClInclude Include="Source\Math\Utilities\ConvexPolygon.h" />
+    <ClInclude Include="Source\Math\Utilities\Line.h" />
     <ClInclude Include="Source\Math\Utilities\LineSegment.h" />
+    <ClInclude Include="Source\Math\Utilities\Ray.h" />
     <ClInclude Include="Source\PlanarObject.h" />
     <ClInclude Include="Source\PlanarObjects\Ball.h" />
     <ClInclude Include="Source\PlanarObjects\RigidBody.h" />
@@ -40,6 +44,7 @@
     <ClCompile Include="Source\CollisionHandler.cpp" />
     <ClCompile Include="Source\CollisionHandlers\BallBallCH.cpp" />
     <ClCompile Include="Source\CollisionHandlers\BallWallCH.cpp" />
+    <ClCompile Include="Source\CollisionHandlers\RBodyRBodyCH.cpp" />
     <ClCompile Include="Source\CollisionHandlers\RigidBodyWallCH.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Multivector2D.cpp" />
@@ -47,7 +52,10 @@
     <ClCompile Include="Source\Math\GeometricAlgebra\Rotor2D.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Vector2D.cpp" />
     <ClCompile Include="Source\Math\Utilities\BoundingBox.cpp" />
+    <ClCompile Include="Source\Math\Utilities\ConvexPolygon.cpp" />
+    <ClCompile Include="Source\Math\Utilities\Line.cpp" />
     <ClCompile Include="Source\Math\Utilities\LineSegment.cpp" />
+    <ClCompile Include="Source\Math\Utilities\Ray.cpp" />
     <ClCompile Include="Source\PlanarObject.cpp" />
     <ClCompile Include="Source\PlanarObjects\Ball.cpp" />
     <ClCompile Include="Source\PlanarObjects\RigidBody.cpp" />

@@ -56,6 +56,14 @@ void Vector2D::operator-=(const Vector2D& vector)
 	this->y -= vector.y;
 }
 
+Vector2D Vector2D::operator-() const
+{
+	return Vector2D(
+		-this->x,
+		-this->y
+	);
+}
+
 Vector2D Vector2D::Inverted() const
 {
 	return *this / (*this | *this);

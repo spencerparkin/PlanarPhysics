@@ -1,7 +1,9 @@
 #include "RigidBody.h"
 #include "Engine.h"
 #include "Math/GeometricAlgebra/Rotor2D.h"
+#include "Math/GeometricAlgebra/PScalar2D.h"
 #include "Math/Utilities/BoundingBox.h"
+#include "Math/Utilities/LineSegment.h"
 
 using namespace PlanarPhysics;
 
@@ -9,16 +11,12 @@ RigidBody::RigidBody()
 {
 	this->inertia = 0.0;
 	this->mass = 0.0;
-	this->worldVertexArrayValid = false;
+	this->worldPolygonValid = false;
 	this->inRestingContact = false;
-	this->localVertexArray = new std::vector<Vector2D>();
-	this->worldVertexArray = new std::vector<Vector2D>();
 }
 
 /*virtual*/ RigidBody::~RigidBody()
 {
-	delete this->localVertexArray;
-	delete this->worldVertexArray;
 }
 
 /*static*/ PlanarObject::Type RigidBody::StaticType()
@@ -36,33 +34,30 @@ RigidBody::RigidBody()
 	return Type::RIGID_BODY;
 }
 
-void RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity)
+bool RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity)
 {
 	if (pointArray.size() == 0)
-		return;
+		return false;
 
-	// TODO: Find convex hull of given point set.  For now, just assume it forms a convex call and is wound CCW.
-
-	this->localVertexArray->clear();
-	for (const Vector2D& point : pointArray)
-		this->localVertexArray->push_back(point);
+	if (!this->localPolygon.CalcConvexHull(pointArray))
+		return false;
 
 	Vector2D center(0.0, 0.0);
-	for (const Vector2D& vertex : *this->localVertexArray)
+	for (const Vector2D& vertex : this->localPolygon.GetVertexArray())
 		center += vertex;
-	center /= double(this->localVertexArray->size());
-	for (Vector2D& vertex : *this->localVertexArray)
+	center /= double(this->localPolygon.GetVertexCount());
+	for (Vector2D& vertex : this->localPolygon.GetVertexArray())
 		vertex -= center;
 
-	this->worldVertexArrayValid = false;
+	this->worldPolygonValid = false;
 
 	PScalar2D area = 0.0;
-	for (int i = 0; i < (signed)this->localVertexArray->size(); i++)
+	for (int i = 0; i < (signed)this->localPolygon.GetVertexCount(); i++)
 	{
-		int j = (i + 1) % this->localVertexArray->size();
+		int j = (i + 1) % this->localPolygon.GetVertexCount();
 
-		const Vector2D& vertexA = (*this->localVertexArray)[i];
-		const Vector2D& vertexB = (*this->localVertexArray)[j];
+		const Vector2D& vertexA = this->localPolygon[i];
+		const Vector2D& vertexB = this->localPolygon[j];
 
 		area += (vertexA ^ vertexB) / 2.0;
 	}
@@ -70,13 +65,11 @@ void RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double unifor
 	this->mass = area.z * uniformDensity;
 	this->inertia = 0.0;
 
-	this->UpdateWorldVertexArrayIfNeeded();
+	this->UpdateWorldPolygonIfNeeded();
 
 	BoundingBox box;
-	box.min = (*this->worldVertexArray)[0];
-	box.max = (*this->worldVertexArray)[0];
-	for (const Vector2D& vertex : *this->worldVertexArray)
-		box.ExpandToIncludePoint(vertex);
+	if (!this->worldPolygon.CalcBoundingBox(box))
+		return false;
 
 	// Approximate our rotational inertia.
 	int resolution = 100;
@@ -97,50 +90,37 @@ void RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double unifor
 			}
 		}
 	}
-}
-
-bool RigidBody::ContainsPoint(const Vector2D& point) const
-{
-	this->UpdateWorldVertexArrayIfNeeded();
-
-	for (int i = 0; i < (signed)this->worldVertexArray->size(); i++)
-	{
-		int j = (i + 1) % this->worldVertexArray->size();
-
-		const Vector2D& vertexA = (*this->worldVertexArray)[i];
-		const Vector2D& vertexB = (*this->worldVertexArray)[j];
-
-		PScalar2D det = (point - vertexA) ^ (vertexB - vertexA);
-		if (det.z > 0.0)
-			return false;
-	}
 
 	return true;
 }
 
-void RigidBody::UpdateWorldVertexArrayIfNeeded() const
+bool RigidBody::ContainsPoint(const Vector2D& point) const
 {
-	if (!this->worldVertexArrayValid)
+	this->UpdateWorldPolygonIfNeeded();
+
+	return this->worldPolygon.ContainsPoint(point);
+}
+
+void RigidBody::UpdateWorldPolygonIfNeeded() const
+{
+	if (!this->worldPolygonValid)
 	{
-		this->worldVertexArray->clear();
+		this->worldPolygon.SetVertexCount(this->localPolygon.GetVertexCount());
 
 		Rotor2D rotor = this->orientation.Exponent();
 
-		for (const Vector2D& localVertex : *this->localVertexArray)
-		{
-			Vector2D worldVertex = this->position + localVertex * rotor;
-			this->worldVertexArray->push_back(worldVertex);
-		}
+		for (int i = 0; i < this->localPolygon.GetVertexCount(); i++)
+			this->worldPolygon[i] = this->position + this->localPolygon[i] * rotor;
 
-		this->worldVertexArrayValid = true;
+		this->worldPolygonValid = true;
 	}
 }
 
-const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
+const ConvexPolygon& RigidBody::GetWorldPolygon() const
 {
-	this->UpdateWorldVertexArrayIfNeeded();
+	this->UpdateWorldPolygonIfNeeded();
 	
-	return *this->worldVertexArray;
+	return this->worldPolygon;
 }
 
 /*virtual*/ void RigidBody::Integrate(double deltaTime)
@@ -154,7 +134,7 @@ const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
 	this->position += this->velocity * deltaTime;
 	this->orientation += this->angularVelocity * deltaTime;
 
-	this->worldVertexArrayValid = false;
+	this->worldPolygonValid = false;
 }
 
 /*virtual*/ void RigidBody::AccumulateForces(const Engine* engine)
@@ -176,4 +156,35 @@ const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
 {
 	this->netForce = Vector2D(0.0, 0.0);
 	this->netTorque = PScalar2D(0.0);
+}
+
+bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Vector2D& nearestSurfacePoint, Vector2D& nearestSurfaceNormal) const
+{
+	this->UpdateWorldPolygonIfNeeded();
+
+	if (!this->worldPolygon.ContainsPoint(point))
+		return false;
+
+	double shortestDistance = std::numeric_limits<double>::max();
+
+	for (int i = 0; i < this->worldPolygon.GetVertexCount(); i++)
+	{
+		int j = (i + 1) % this->worldPolygon.GetVertexCount();
+
+		const Vector2D& vertexA = this->worldPolygon[i];
+		const Vector2D& vertexB = this->worldPolygon[j];
+
+		LineSegment edgeSegment(vertexA, vertexB);
+
+		Vector2D edgePoint = edgeSegment.NearestPoint(point);
+		double distance = (edgePoint - point).Magnitude();
+		if (distance < shortestDistance)
+		{
+			shortestDistance = distance;
+			nearestSurfacePoint = edgePoint;
+			nearestSurfaceNormal = ((edgeSegment.vertexA - edgeSegment.vertexB) * PScalar2D(1.0)).Normalized();
+		}
+	}
+
+	return true;
 }
