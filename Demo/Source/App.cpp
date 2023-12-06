@@ -132,9 +132,13 @@ bool App::HandleKeyboard()
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-							int i = Random::Integer(4, 8);
-							for (int j = 0; j < i; j++)
-								pointArray.push_back(Random::Vector(5.0, 10.0));
+							//int i = Random::Integer(4, 8);
+							//for (int j = 0; j < i; j++)
+							//	pointArray.push_back(Random::Vector(5.0, 10.0));
+							pointArray.push_back(Vector2D(-10.0, -5.0));
+							pointArray.push_back(Vector2D(10.0, -5.0));
+							pointArray.push_back(Vector2D(10.0, 5.0));
+							pointArray.push_back(Vector2D(-10.0, 5.0));
 
 							if (!body->MakeShape(pointArray, 1.0))
 							{
