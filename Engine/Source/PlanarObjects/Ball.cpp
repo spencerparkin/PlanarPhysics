@@ -55,8 +55,8 @@ double Ball::Mass() const
 
 	if (this->inRestingContact)
 	{
-		double frictionCoeficient = 10.0;
-		Vector2D frictionForce = this->velocity * -1.0 * frictionCoeficient;
+		double frictionCoeficient = 0.5;
+		Vector2D frictionForce = this->Mass() * this->velocity * -1.0 * frictionCoeficient;
 		this->netForce += frictionForce;
 	}
 }

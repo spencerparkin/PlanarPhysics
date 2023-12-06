@@ -10,6 +10,7 @@ RigidBody::RigidBody()
 	this->inertia = 0.0;
 	this->mass = 0.0;
 	this->worldVertexArrayValid = false;
+	this->inRestingContact = false;
 	this->localVertexArray = new std::vector<Vector2D>();
 	this->worldVertexArray = new std::vector<Vector2D>();
 }
@@ -161,6 +162,13 @@ const std::vector<Vector2D>& RigidBody::GetWorldVertexArray() const
 	if ((this->flags & PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY) != 0)
 	{
 		this->netForce += engine->accelerationDueToGravity * this->mass;
+	}
+
+	if (this->inRestingContact)
+	{
+		double frictionCoeficient = 10.0;
+		Vector2D frictionForce = this->mass * this->velocity * -1.0 * frictionCoeficient;
+		this->netForce += frictionForce;
 	}
 }
 
