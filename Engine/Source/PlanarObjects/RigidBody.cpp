@@ -158,14 +158,14 @@ const ConvexPolygon& RigidBody::GetWorldPolygon() const
 	this->netTorque = PScalar2D(0.0);
 }
 
-bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Vector2D& nearestSurfacePoint, Vector2D& nearestSurfaceNormal) const
+bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact) const
 {
 	this->UpdateWorldPolygonIfNeeded();
 
 	if (!this->worldPolygon.ContainsPoint(point))
 		return false;
 
-	double shortestDistance = std::numeric_limits<double>::max();
+	contact.penetrationDepth = std::numeric_limits<double>::max();
 
 	for (int i = 0; i < this->worldPolygon.GetVertexCount(); i++)
 	{
@@ -178,11 +178,11 @@ bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Vector2D& ne
 
 		Vector2D edgePoint = edgeSegment.NearestPoint(point);
 		double distance = (edgePoint - point).Magnitude();
-		if (distance < shortestDistance)
+		if (distance < contact.penetrationDepth)
 		{
-			shortestDistance = distance;
-			nearestSurfacePoint = edgePoint;
-			nearestSurfaceNormal = ((edgeSegment.vertexA - edgeSegment.vertexB) * PScalar2D(1.0)).Normalized();
+			contact.penetrationDepth = distance;
+			contact.point = edgePoint;
+			contact.normal = ((edgeSegment.vertexA - edgeSegment.vertexB) * PScalar2D(1.0)).Normalized();
 		}
 	}
 

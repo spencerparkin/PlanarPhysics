@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "Math/GeometricAlgebra/Vector2D.h"
 
 #define PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY		0x00000001
 
@@ -28,6 +29,13 @@ namespace PlanarPhysics
 
 		uint32_t GetFlags() const;
 		void SetFlags(uint32_t flags);
+
+		struct Contact
+		{
+			double penetrationDepth;
+			Vector2D normal;
+			Vector2D point;
+		};
 
 	protected:
 		virtual void AccumulateForces(const Engine* engine);
