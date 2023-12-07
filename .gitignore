@@ -36,3 +36,6 @@ Debug/
 Release/
 x64/
 .vs/
+
+# Latex intermediates
+*.gz
