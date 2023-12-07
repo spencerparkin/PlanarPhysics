@@ -44,6 +44,7 @@ RBodyRBodyCH::RBodyRBodyCH()
 		}
 	}
 
+	// TODO: Not so sure about this in the case that we have multiple contact points.
 	for (const PlanarObject::Contact& contact : contactArray)
 	{
 		bodyA->position += contact.normal * contact.penetrationDepth / 2.0;

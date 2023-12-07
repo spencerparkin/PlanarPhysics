@@ -177,3 +177,42 @@ void BoundingBox::ExpandToIncludePoint(const Vector2D& point)
 	this->max.x = PLNR_PHY_MAX(this->max.x, point.x);
 	this->max.y = PLNR_PHY_MAX(this->max.y, point.y);
 }
+
+void BoundingBox::Split(BoundingBox& boxA, BoundingBox& boxB) const
+{
+	if (this->Width() > this->Height())
+	{
+		boxA.min.x = this->min.x;
+		boxA.max.x = (this->min.x + this->max.x) / 2.0;
+		boxB.min.x = (this->min.x + this->max.x) / 2.0;
+		boxB.max.x = this->max.x;
+
+		boxA.min.y = this->min.y;
+		boxA.max.y = this->max.y;
+		boxB.min.y = this->min.y;
+		boxB.max.y = this->max.y;
+	}
+	else
+	{
+		boxA.min.y = this->min.y;
+		boxA.max.y = (this->min.y + this->max.y) / 2.0;
+		boxB.min.y = (this->min.y + this->max.y) / 2.0;
+		boxB.max.y = this->max.y;
+
+		boxA.min.x = this->min.x;
+		boxA.max.x = this->max.x;
+		boxB.min.x = this->min.x;
+		boxB.max.x = this->max.x;
+	}
+}
+
+bool BoundingBox::OverlapsWith(const BoundingBox& box) const
+{
+	BoundingBox intersection;
+	return intersection.Intersect(*this, box);
+}
+
+bool BoundingBox::ContainsBox(const BoundingBox& box) const
+{
+	return this->ContainsPoint(box.min) && this->ContainsPoint(box.max);
+}

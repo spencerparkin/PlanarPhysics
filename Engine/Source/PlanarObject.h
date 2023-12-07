@@ -2,14 +2,17 @@
 
 #include "Common.h"
 #include "Math/GeometricAlgebra/Vector2D.h"
+#include "Math/Utilities/BoundingBox.h"
+#include "BoxTree.h"
 
 #define PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY		0x00000001
 
 namespace PlanarPhysics
 {
 	class Engine;
+	class BoundingBox;
 
-	class PLANAR_PHYSICS_API PlanarObject
+	class PLANAR_PHYSICS_API PlanarObject : public BoxTree::Member
 	{
 		friend class Engine;
 

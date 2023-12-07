@@ -21,6 +21,8 @@ namespace PlanarPhysics
 		void operator+=(const Vector2D& vector);
 		void operator-=(const Vector2D& vector);
 		Vector2D operator-() const;
+		bool operator==(const Vector2D& vector) const;
+		bool operator!=(const Vector2D& vector) const;
 
 		Vector2D Inverted() const;
 		Vector2D Normalized() const;

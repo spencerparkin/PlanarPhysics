@@ -25,6 +25,7 @@ namespace PlanarPhysics
 		virtual void Integrate(double deltaTime) override;
 		virtual void AccumulateForces(const Engine* engine) override;
 		virtual void AdvanceBegin() override;
+		virtual void CalcBoundingBox(BoundingBox& box) const override;
 
 	public:
 		bool MakeShape(const std::vector<Vector2D>& pointArray, double uniformDensity);

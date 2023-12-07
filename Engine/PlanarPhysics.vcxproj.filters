@@ -82,6 +82,9 @@
     <ClInclude Include="Source\Math\Utilities\ConvexPolygon.h">
       <Filter>Source\Math\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\BoxTree.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="Source\Math\Utilities\ConvexPolygon.cpp">
       <Filter>Source\Math\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BoxTree.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

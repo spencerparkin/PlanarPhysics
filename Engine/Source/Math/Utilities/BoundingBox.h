@@ -36,6 +36,9 @@ namespace PlanarPhysics
 		void ExpandToIncludePoint(const Vector2D& point);
 		Vector2D Center() const;
 		Vector2D Transform(const Vector2D& point, const BoundingBox& pointSpace) const;
+		void Split(BoundingBox& boxA, BoundingBox& boxB) const;
+		bool OverlapsWith(const BoundingBox& box) const;
+		bool ContainsBox(const BoundingBox& box) const;
 
 		Vector2D min, max;
 	};

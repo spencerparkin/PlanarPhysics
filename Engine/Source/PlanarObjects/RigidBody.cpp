@@ -134,7 +134,11 @@ const ConvexPolygon& RigidBody::GetWorldPolygon() const
 	this->position += this->velocity * deltaTime;
 	this->orientation += this->angularVelocity * deltaTime;
 
-	this->worldPolygonValid = false;
+	if (this->velocity != Vector2D(0.0, 0.0) || this->angularVelocity != PScalar2D(0.0))
+	{
+		this->cachedBoundingBoxValid = false;
+		this->worldPolygonValid = false;
+	}
 }
 
 /*virtual*/ void RigidBody::AccumulateForces(const Engine* engine)
@@ -187,4 +191,15 @@ bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Contact& con
 	}
 
 	return true;
+}
+
+/*virtual*/ void RigidBody::CalcBoundingBox(BoundingBox& box) const
+{
+	box.min = this->position;
+	box.max = this->position;
+
+	this->UpdateWorldPolygonIfNeeded();
+
+	for (const Vector2D& vertex : this->worldPolygon.GetVertexArray())
+		box.ExpandToIncludePoint(vertex);
 }

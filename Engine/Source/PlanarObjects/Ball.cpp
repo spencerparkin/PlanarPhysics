@@ -44,6 +44,9 @@ double Ball::Mass() const
 	Vector2D acceleration = this->netForce / this->Mass();
 	this->velocity += acceleration * deltaTime;
 	this->position += this->velocity * deltaTime;
+
+	if (this->velocity != Vector2D(0.0, 0.0))
+		this->cachedBoundingBoxValid = false;
 }
 
 /*virtual*/ void Ball::AccumulateForces(const Engine* engine)
@@ -64,4 +67,11 @@ double Ball::Mass() const
 /*virtual*/ void Ball::AdvanceBegin()
 {
 	this->netForce = Vector2D(0.0, 0.0);
+}
+
+/*virtual*/ void Ball::CalcBoundingBox(BoundingBox& box) const
+{
+	Vector2D vector(this->radius, this->radius);
+	box.min = this->position - vector;
+	box.max = this->position + vector;
 }

@@ -40,6 +40,17 @@ Engine::Engine()
 			delete this->collisionHandlerMatrix[i][j];
 }
 
+void Engine::SetWorldBox(const BoundingBox& worldBox)
+{
+	this->boxTree.treeBox = worldBox;
+	this->boxTree.Clear();
+}
+
+const BoundingBox& Engine::GetWorldBox() const
+{
+	return this->boxTree.treeBox;
+}
+
 const std::vector<PlanarObject*>& Engine::GetPlanarObjectArray() const
 {
 	return *this->planarObjectArray;
@@ -47,6 +58,8 @@ const std::vector<PlanarObject*>& Engine::GetPlanarObjectArray() const
 
 void Engine::Clear()
 {
+	this->boxTree.Clear();
+
 	for (PlanarObject* object : *this->planarObjectArray)
 		object->DeleteSelf();
 
@@ -84,19 +97,34 @@ void Engine::Tick()
 		for (PlanarObject* object : *this->planarObjectArray)
 			object->Integrate(deltaTime);
 
-		// TODO: This is O(n^2).  Make it better.
-		for (int i = 0; i < (signed)this->planarObjectArray->size(); i++)
+		for (PlanarObject* object : *this->planarObjectArray)
+			object->UpdateBoxTreeLocation(&this->boxTree);
+
+		// TODO: This is still very slow?  Profile to figure out where we're spending so much time.
+		std::unordered_set<uint64_t> pairSet;
+		for (PlanarObject* objectA : *this->planarObjectArray)
 		{
-			PlanarObject* objectA = (*this->planarObjectArray)[i];
+			this->boxTree.ForAllOverlaps(objectA, [this, objectA, &pairSet](BoxTree::Member* member) {
+				auto objectB = dynamic_cast<PlanarObject*>(member);
+				if (objectB != objectA)
+				{
+					uint64_t key = 0;
 
-			for (int j = i + 1; j < (signed)this->planarObjectArray->size(); j++)
-			{
-				PlanarObject* objectB = (*this->planarObjectArray)[j];
+					if (uintptr_t(objectA) < uintptr_t(objectB))
+						key = uint64_t(objectA) | (uint64_t(objectB) << 32);
+					else
+						key = uint64_t(objectB) | (uint64_t(objectA) << 32);
 
-				CollisionHandler* handler = collisionHandlerMatrix[(int)objectA->GetType()][(int)objectB->GetType()];
-				if (handler)
-					handler->HandleCollision(objectA, objectB);
-			}
+					if (pairSet.find(key) == pairSet.end())
+					{
+						pairSet.insert(key);
+
+						CollisionHandler* handler = this->collisionHandlerMatrix[(int)objectA->GetType()][(int)objectB->GetType()];
+						if (handler)
+							handler->HandleCollision(objectA, objectB);
+					}
+				}
+			});
 		}
 
 		for (PlanarObject* object : *this->planarObjectArray)

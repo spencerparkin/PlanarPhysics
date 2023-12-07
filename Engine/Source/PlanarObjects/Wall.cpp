@@ -40,3 +40,10 @@ Vector2D Wall::Normal() const
 {
 	return ((this->lineSeg.vertexB - this->lineSeg.vertexA) * PScalar2D(1.0)).Normalized();
 }
+
+/*virtual*/ void Wall::CalcBoundingBox(BoundingBox& box) const
+{
+	box.min = this->lineSeg.vertexA;
+	box.max = box.min;
+	box.ExpandToIncludePoint(this->lineSeg.vertexB);
+}

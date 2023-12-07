@@ -35,11 +35,13 @@ BallWallCH::BallWallCH()
 	Vector2D contactNormal = direction.Normalized();
 	ball->position += contactNormal * (ball->radius - distance);
 
-	double coeficientOfRestitution = 0.9;	// This ranges 0 to 1.
-	double impulseMag = (1.0 + coeficientOfRestitution) * ::fabs(contactNormal | ball->velocity);
+	double relativeVelocity = contactNormal | ball->velocity;
+	ball->inRestingContact = ::fabs(relativeVelocity) < 0.05;
+	if (relativeVelocity > 0.0)
+		return;
+
+	double coeficientOfRestitution = 0.6;	// This ranges 0 to 1.
+	double impulseMag = (1.0 + coeficientOfRestitution) * ::fabs(relativeVelocity);
 	Vector2D impulse = contactNormal * impulseMag;
-
-	ball->inRestingContact = (impulseMag < 0.05);
-
 	ball->velocity += impulse;
 }

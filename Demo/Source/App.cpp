@@ -34,6 +34,7 @@ bool App::Setup()
 	SDL_SetWindowTitle(drawHelper.window, "Planar Physics Engine Demo");
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
+	this->engine.SetWorldBox(this->drawHelper.worldBox);
 
 	this->MakeWalls();
 
@@ -132,13 +133,9 @@ bool App::HandleKeyboard()
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-							//int i = Random::Integer(4, 8);
-							//for (int j = 0; j < i; j++)
-							//	pointArray.push_back(Random::Vector(5.0, 10.0));
-							pointArray.push_back(Vector2D(-10.0, -5.0));
-							pointArray.push_back(Vector2D(10.0, -5.0));
-							pointArray.push_back(Vector2D(10.0, 5.0));
-							pointArray.push_back(Vector2D(-10.0, 5.0));
+							int i = Random::Integer(3, 5);
+							for (int j = 0; j < i; j++)
+								pointArray.push_back(Random::Vector(5.0, 10.0));
 
 							if (!body->MakeShape(pointArray, 1.0))
 							{

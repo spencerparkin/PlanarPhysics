@@ -3,6 +3,7 @@
 #include "Common.h"
 #include "PlanarObject.h"
 #include "Math/GeometricAlgebra/Vector2D.h"
+#include "BoxTree.h"
 
 namespace PlanarPhysics
 {
@@ -26,6 +27,8 @@ namespace PlanarPhysics
 
 		void Clear();
 		void Tick();
+		void SetWorldBox(const BoundingBox& worldBox);
+		const BoundingBox& GetWorldBox() const;
 
 		Vector2D accelerationDueToGravity;
 
@@ -33,6 +36,7 @@ namespace PlanarPhysics
 
 		CollisionHandler* collisionHandlerMatrix[(int)PlanarObject::Type::NUM_TYPES][(int)PlanarObject::Type::NUM_TYPES];
 		std::vector<PlanarObject*>* planarObjectArray;
+		BoxTree boxTree;
 		double currentTime;
 		double maxDeltaTime;
 	};

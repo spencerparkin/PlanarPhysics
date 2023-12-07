@@ -64,6 +64,16 @@ Vector2D Vector2D::operator-() const
 	);
 }
 
+bool Vector2D::operator==(const Vector2D& vector) const
+{
+	return this->x == vector.x && this->y == vector.y;
+}
+
+bool Vector2D::operator!=(const Vector2D& vector) const
+{
+	return this->x != vector.x || this->y != vector.y;
+}
+
 Vector2D Vector2D::Inverted() const
 {
 	return *this / (*this | *this);

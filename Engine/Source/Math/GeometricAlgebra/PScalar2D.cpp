@@ -42,6 +42,21 @@ void PScalar2D::operator-=(const PScalar2D& pscalar)
 	this->z -= pscalar.z;
 }
 
+PScalar2D PScalar2D::operator-() const
+{
+	return PScalar2D(-this->z);
+}
+
+bool PScalar2D::operator==(const PScalar2D& pscalar) const
+{
+	return this->z == pscalar.z;
+}
+
+bool PScalar2D::operator!=(const PScalar2D& pscalar) const
+{
+	return this->z != pscalar.z;
+}
+
 PScalar2D PScalar2D::Reversed() const
 {
 	return PScalar2D(

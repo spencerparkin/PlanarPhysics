@@ -18,6 +18,9 @@ namespace PlanarPhysics
 		void operator*=(double scalar);
 		void operator+=(const PScalar2D& pscalar);
 		void operator-=(const PScalar2D& pscalar);
+		PScalar2D operator-() const;
+		bool operator==(const PScalar2D& pscalar) const;
+		bool operator!=(const PScalar2D& pscalar) const;
 
 		PScalar2D Reversed() const;
 		PScalar2D Inverted() const;
