@@ -22,6 +22,8 @@ RBodyRBodyCH::RBodyRBodyCH()
 	std::vector<PlanarObject::Contact> contactArray;
 
 	// TODO: It is possible for two polygons to overlap and yet, neither has a vertex contained within the other.
+	//       My collision detection here is flawed.  Use a ray-cast method deligated to the polygon class to find
+	//       the contact points and normals.
 
 	for (const Vector2D& vertexA : bodyA->GetWorldPolygon().GetVertexArray())
 	{
