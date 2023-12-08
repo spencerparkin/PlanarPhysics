@@ -42,6 +42,9 @@ bool RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double unifor
 	if (!this->localPolygon.CalcConvexHull(pointArray))
 		return false;
 
+	// TODO: I think this is wrong!  The average of the vertices is
+	//       not necessarily the center of mass of the polygon!
+
 	Vector2D center(0.0, 0.0);
 	for (const Vector2D& vertex : this->localPolygon.GetVertexArray())
 		center += vertex;

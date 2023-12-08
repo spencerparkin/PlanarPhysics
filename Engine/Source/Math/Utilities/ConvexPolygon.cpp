@@ -131,6 +131,8 @@ bool ConvexPolygon::CalcConvexHull(const std::vector<Vector2D>& pointArray)
 			this->vertexArray->push_back(vertex);
 	}
 
+	// TODO: Are we sure that all redundant points on the hull are removed?
+
 	return true;
 }
 

@@ -22,6 +22,10 @@ namespace PlanarPhysics
 		bool ContainsPoint(const Vector2D& point, double thickness = PLNR_PHY_EPSILON) const;
 		bool AllPointsOnOrBehindLine(const Line& line) const;
 
+		// TODO: Add routine that calculates the intersection between two convex polygons.
+		//       Make sure that it uses a ray-cast method of doing so so that we get all
+		//       the degenerate cases nailed down.
+
 		const Vector2D& operator[](int i) const;
 		Vector2D& operator[](int i);
 
