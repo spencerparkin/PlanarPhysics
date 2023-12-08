@@ -42,58 +42,56 @@ bool RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double unifor
 	if (!this->localPolygon.CalcConvexHull(pointArray))
 		return false;
 
-	// TODO: I think this is wrong!  The average of the vertices is
-	//       not necessarily the center of mass of the polygon!
-
-	Vector2D center(0.0, 0.0);
-	for (const Vector2D& vertex : this->localPolygon.GetVertexArray())
-		center += vertex;
-	center /= double(this->localPolygon.GetVertexCount());
-	for (Vector2D& vertex : this->localPolygon.GetVertexArray())
-		vertex -= center;
+	Vector2D desiredPosition = this->position;
+	PScalar2D desiredOrientation = this->orientation;
+	this->position = Vector2D(0.0, 0.0);
+	this->orientation = PScalar2D(0.0);
 
 	this->worldPolygonValid = false;
-
-	PScalar2D area = 0.0;
-	for (int i = 0; i < (signed)this->localPolygon.GetVertexCount(); i++)
-	{
-		int j = (i + 1) % this->localPolygon.GetVertexCount();
-
-		const Vector2D& vertexA = this->localPolygon[i];
-		const Vector2D& vertexB = this->localPolygon[j];
-
-		area += (vertexA ^ vertexB) / 2.0;
-	}
-
-	this->mass = area.z * uniformDensity;
-	this->inertia = 0.0;
-
 	this->UpdateWorldPolygonIfNeeded();
-
 	BoundingBox box;
 	if (!this->worldPolygon.CalcBoundingBox(box))
 		return false;
 
-	// Approximate our rotational inertia.
+	// Here we approximate the mass and the center of mass.  We could calculate it exactly, but
+	// we are also approximating the moment of inertia, so this is just consistent with that.
 	int resolution = 100;
-	for (int i = 0; i < resolution; i++)
-	{
-		for (int j = 0; j < resolution; j++)
+	Vector2D totalMoments(0.0, 0.0);
+	this->mass = 0.0;
+	box.IntegrateOverArea(resolution, [this, uniformDensity, &totalMoments](const BoundingBox& subBox) {
+		Vector2D subBoxCenter = subBox.Center();
+		if (this->ContainsPoint(subBoxCenter))
 		{
-			Vector2D uvA(double(i) / double(resolution), double(j) / double(resolution));
-			Vector2D uvB(double(i + 1) / double(resolution), double(j + 1) / double(resolution));
-
-			BoundingBox subBox(box.PointFromUVs(uvA), box.PointFromUVs(uvB));
-
-			Vector2D subBoxCenter = subBox.Center();
-			if (this->ContainsPoint(subBoxCenter))
-			{
-				Vector2D vector = subBoxCenter - this->position;
-				this->inertia += subBox.Area() * uniformDensity * (vector | vector);
-			}
+			double subBoxMass = subBox.Area() * uniformDensity;
+			totalMoments += subBoxMass * subBoxCenter;
+			this->mass += subBoxMass;
 		}
-	}
+	});
 
+	// To simplify our equations, we want the origin to be the center of mass in local space.
+	Vector2D centerOfMass = totalMoments / this->mass;
+	for (Vector2D& vertex : this->localPolygon.GetVertexArray())
+		vertex -= centerOfMass;
+
+	this->inertia = 0.0;
+	this->worldPolygonValid = false;
+	this->UpdateWorldPolygonIfNeeded();
+	if (!this->worldPolygon.CalcBoundingBox(box))
+		return false;
+
+	// Go approximate the angular inertia.
+	box.IntegrateOverArea(resolution, [this, uniformDensity](const BoundingBox& subBox) {
+		Vector2D subBoxCenter = subBox.Center();
+		if (this->ContainsPoint(subBoxCenter))
+		{
+			double subBoxMass = subBox.Area() * uniformDensity;
+			this->inertia += subBoxMass * (subBoxCenter | subBoxCenter);
+		}
+	});
+
+	this->position = desiredPosition;
+	this->orientation = desiredOrientation;
+	this->worldPolygonValid = false;
 	return true;
 }
 

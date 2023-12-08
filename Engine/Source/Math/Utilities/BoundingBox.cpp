@@ -216,3 +216,19 @@ bool BoundingBox::ContainsBox(const BoundingBox& box) const
 {
 	return this->ContainsPoint(box.min) && this->ContainsPoint(box.max);
 }
+
+void BoundingBox::IntegrateOverArea(int resolution, std::function<void(const BoundingBox& subBox)> integralFunc)
+{
+	for (int i = 0; i < resolution; i++)
+	{
+		for (int j = 0; j < resolution; j++)
+		{
+			Vector2D uvA(double(i) / double(resolution), double(j) / double(resolution));
+			Vector2D uvB(double(i + 1) / double(resolution), double(j + 1) / double(resolution));
+
+			BoundingBox subBox(this->PointFromUVs(uvA), this->PointFromUVs(uvB));
+
+			integralFunc(subBox);
+		}
+	}
+}
