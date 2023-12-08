@@ -11,7 +11,7 @@
 \newcommand{\prl}{\parallel}
 \newcommand{\prp}{\perp}
 
-\title{Planar Physics with Geometric Algebra}
+\title{Planar Physics for Computer Simulation\\with Geometric Algebra}
 \author{Spencer T. Parkin}
 
 \begin{document}
@@ -175,5 +175,104 @@ But I believe I've digressed too far.  Let's get back to physics in the plane as
 our chosen application of GA.
 
 \section{Rigid Body Model}
+
+For the remainder of the paper, we're going to use $\V=\mbox{span}\{e_1,e_2\}$ as our vector space, where $e_1$ and
+$e_2$ denote the $x$ and $y$-axes of the traditional, right-handed cartesian coordinate plane, respectively.  The basis for our GA will
+then be
+\begin{equation}
+\{1,e_1,e_2,e_1\wedge e_2\}.
+\end{equation}
+That is, the elements of our GA will all be linear combinations of these basis elements.
+
+\subsection{Center of Mass}
+
+For our purposes, a rigid body will be a convex polygon of uniform density.  Convex, because it simplifies collision detection;
+and of uniform density, so that mass is a scalar multiple of area.  To make things even simpler, we'll just let mass and area
+be the same.
+
+That said, such a rigid body is typically stored in memory as an array of $n$ points $\{x_i\}_{i=1}^n\subset\V$, wound counter-clock-wise in the plane.
+Our first order of business will be to calculate its center of mass.  We have to be careful here, because it is tempting to think that $C$ is the center
+of mass, where
+\begin{equation}\label{equ_geo_center}
+C = \frac{1}{n}\sum_{i=1}^n x_i,
+\end{equation}
+but this is not always the case.  We will let $C$, as it is written here in equation \eqref{equ_geo_center},
+denote the average center of our convex shape.  (Note that since
+our shape is convex, $C$ is guarenteed to be inside our shape.)
+To find the center of mass, however, let's look at its definition.  Given a shape $S$ with area $A$, the center of
+mass is given by
+\begin{equation}
+C = \frac{1}{A}\int_S x dA,
+\end{equation}
+where here, $dA$ is a bit of area in $S$ at $x$.  Using this definition, we can prove that the center of mass of a right-triangle
+is also its average center.
+\begin{figure}\label{fig_right_triangle}
+\centering
+\includegraphics[scale=0.5]{right_triangle}
+\caption{A right-triangle in the plane with with $w$ and height $h$.}
+\end{figure}
+To that end, consider the triangle in figure \eqref{fig_right_triangle}.  The average center of this triangle is clearly
+\begin{equation}\label{right_triangle_geo_center}
+C = \frac{(0e_1 + 0e_2) + (we_1 + 0e_2) + (we_1 + he_2)}{3} = \frac{2}{3}we_1 + \frac{1}{3}he_2,
+\end{equation}
+but is this also the center of mass?  To find out, we apply our definition, and come up with the integral
+\begin{equation}\label{right_triangle_integral}
+C = \left(\frac{wh}{2}\right)^{-1}\int_0^h\int_{yw/h}^w(xe_1 + ye_2)dxdy.
+\end{equation}
+
+I'll leave the evaluation of this integral as an exercise for the reader.  Suffice it to say, equations \eqref{right_triangle_geo_center}
+and \eqref{right_triangle_integral} should be equal.  Admittedly, I had to scribble this integral on paper a million times before I
+finally verified its correctness.  Give it a try if you're skeptical.
+
+With this result in hand, we can now use the following trick to calculate the center of mass of our convex polygon.  First,
+we tessellate the convex polygon into a set of $m$ right-triangles $\{T_i\}_{i=1}^m$.  (Tessellate into triangles first, then split each triangle into two right triangles.)
+Having done that, let $C(T_i)$ denote the average center of $T_i$, and let $A(T_i)$ denote its area.  The center of mass of our polygon is then
+\begin{equation}
+C = \frac{1}{A}\sum_{i=1}^m C(T_i)A(T_i),
+\end{equation}
+where $A=\sum_{i=1}^m A(T_i)$.  This works because each term is the total moments of $T_i$, so the sum is the total moments of our polygon,
+and then the center of mass is the total moments of the polygon over its total mass.
+
+Note that another way to compute $A$ is as
+\begin{equation}
+A = \frac{-e_1e_2}{2}\sum_{i=1}^n (x_i-C)\wedge (x_j-C),
+\end{equation}
+where $C$ is the average center of the polygon, or really just any interior point of the polygon, and $j=i+1\pmod m$.
+A positive result here depends on the counter-clockwise winding of the polygon.
+
+\subsection{Moment of Inertia}
+
+For linear motion we have Newton's famous equation $F=ma$, where $F$ is force, $m$ is mass, and $a$ is acceleration.
+Its counter-part in the realm of angular motion is $\tau=I\alpha$, where $\tau$ is torque, $I$ is the moment of inertia, and $\alpha$
+is angular acceleration.  Simulating the motion of our rigid body polygon will require us to use these equations.  At this point,
+however, we only know the mass of our polygon, and its center of mass (about which it will rotate.)  To know how to rotate
+our polygon, we'll also need to know its moment of inertia.
+
+Let's look at the definition.
+\begin{equation}
+I = \int_S (x-C)^2 dA
+\end{equation}
+Here, $S$ is our shape in the plane, $dA$ is a bit of area (or mass in our case), $C$ is the center of mass,
+and $x$ is our variable of integration, visiting every point of $S$.
+
+It is at this point that I'm at a loss for any kind of trick for calculating the exact value of $I$ for our polygon, and so
+what I've done in practice is simply approximate the integral numerically.  This is time-consuming, but it doesn't have
+to be done on initialization of your simulation.  It can be done as a build step for the assets loaded by your
+simulation.
+
+Note that in 3-dimensions, $I$ is not a scalar, but a tensor matrix, and to make things more complicated, it
+depends on the orientation of the rigid body.  We won't have to worry about that in 2-dimensions, though.
+Using CGA, the authors of \cite{} found a way to represent the inertial tensor as an element of the algebra.
+
+\subsection{The Equations of Motion}
+
+% Will want the center of mass to be (0, 0) in local space.
+
+Our first goal is to just get our polygons moving realistically through space, with no regard to any external forces or impulses.
+After that, we can consider the influence of forces, and resolve collisions using impulses.
+
+% e^{Io/2) w e^{-Io/2} = w e^{Io}, but only in 2D, not in ND.
+
+% Need to add citation for David Baraff here.
 
 \end{document}
