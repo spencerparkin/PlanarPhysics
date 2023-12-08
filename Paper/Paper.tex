@@ -36,7 +36,10 @@ V = \bigwedge_{i=1}^n v_i
 \end{equation}
 to be an $n$-blade if the vectors form a linearly independent set, or zero otherwise.
 We call $n$ the grade of the blade, and it follows immediately that the dimension of $\V$
-is an upper-bound on the highest non-zero grade blade we can make.
+is an upper-bound on the highest grade blade we can make that is non-zero.
+Also, we let this be an anti-commutative product; a property we'll take advantage of
+later on.  This just means that a swap of any two adjacent vectors in a wedge product
+will negate the product.
 
 But how do we imagine a blade?  Well, in the case $n=1$, these are already familiar,
 because they're just vectors.  In the case $n=2$, you can think of them as pieces
@@ -119,24 +122,34 @@ Well, we can also write
 \begin{equation}
 aaB = (a\cdot a + a\wedge a)B = |a|^2 B.
 \end{equation}
+To verify this further, we can also write
+\begin{align}
+aaB &= a\wedge(a\cdot B) + a\cdot(a\wedge B) \\
+ &= a_{\prl}\wedge(a_{\prl}\cdot B) + a_{\prp}\cdot(a_{\prp}\wedge B) \\
+ &= |a_{\prl}|^2 B + |a_{\prp}|^2 B \\
+ &= (|a_{\prl}|^2 + |a_{\prp}|^2)B \\
+ &= |a|^2 B.
+\end{align}
+
 All in all, we've shown that $a^{-1}=a/|a|^2$, but what about $B^{-1}$ more generally?
-A trick for determining this is to write $B$ in terms of an orthogonal set of basis vectors $\{b_i\}_{i=1}^n$.
+Letting $B$ now be an $n$-blade,
+a trick for determining $B^{-1}$ is to write $B$ in terms of an orthogonal set of basis vectors $\{b_i\}_{i=1}^n$.
 (We then have, for any two distinct integers $i,j\in[1,n]$, the property $b_i\cdot b_j=0$.)
 Doing so, we have
 \begin{equation}
 B = \bigwedge_{i=1}^n b_i = \prod_{i=1}^n b_i.
 \end{equation}
-Realizing that the outer product is anti-commutative, we also have
+Recalling that the outer product is anti-commutative, we also have
 \begin{equation}
 B = \bigwedge_{i=1}^n b_i = (-1)^k\bigwedge_{i=1}^n b_{n-i+1} = (-1)^k\prod_{i=1}^n b_{n-i+1},
 \end{equation}
 where $k=n(n-1)/2$ is a triangle number.  Thus,
 \begin{equation}
-B^2 = (-1)^k\left(\prod_{i=1}^n b_{n-1+1}\right)\left(\prod_{i=1}^n b_i\right) = \prod_{i=1}^n |b_i|^2.
+B^2 = (-1)^k\left(\prod_{i=1}^n b_{n-i+1}\right)\left(\prod_{i=1}^n b_i\right) = \prod_{i=1}^n |b_i|^2.
 \end{equation}
 Finally, we see that
 \begin{equation}
-B^{-1}=\frac{(-1)^kB}{\prod_{i=1}^n |b_i|^2}.
+B^{-1}=\frac{(-1)^kB}{\prod_{i=1}^n |b_i|^2} = (-1)^k\frac{B}{|B|^2}.
 \end{equation}
 
 So far we've covered blades, the inner and outer products, and the geometric product.  The last thing
