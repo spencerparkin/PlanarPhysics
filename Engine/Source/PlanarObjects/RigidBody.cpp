@@ -114,6 +114,7 @@ void RigidBody::UpdateWorldPolygonIfNeeded() const
 			this->worldPolygon[i] = this->position + this->localPolygon[i] * rotor;
 
 		this->worldPolygonValid = true;
+		this->worldPolygon.edgeLineCacheArrayValid = false;
 	}
 }
 

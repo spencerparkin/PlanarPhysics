@@ -138,9 +138,9 @@ bool App::HandleKeyboard()
 							for (int j = 0; j < i; j++)
 								pointArray.push_back(Random::Vector(5.0, 10.0));
 #else
-							pointArray.push_back(Vector2D(-5.0, -5.0));
-							pointArray.push_back(Vector2D(5.0, -5.0));
-							pointArray.push_back(Vector2D(0.0, 7.0));
+							pointArray.push_back(Vector2D(-8.0, -5.0));
+							pointArray.push_back(Vector2D(8.0, -5.0));
+							pointArray.push_back(Vector2D(8.0, 5.0));
 #endif
 							if (!body->MakeShape(pointArray, 1.0))
 							{

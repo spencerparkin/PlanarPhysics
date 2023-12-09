@@ -1,4 +1,5 @@
 #include "LineSegment.h"
+#include "Ray.h"
 
 using namespace PlanarPhysics;
 
@@ -51,6 +52,12 @@ double LineSegment::DistanceTo(const Vector2D& point) const
 	return (this->NearestPoint(point) - point).Magnitude();
 }
 
+double LineSegment::CalculateLineLerpAlpha(const Vector2D& linePoint) const
+{
+	Vector2D vector = this->vertexB - this->vertexA;
+	return ((linePoint - this->vertexA) | vector) / (vector | vector);
+}
+
 Vector2D& LineSegment::operator[](int i)
 {
 	if (i % 2 == 0)
@@ -61,4 +68,15 @@ Vector2D& LineSegment::operator[](int i)
 const Vector2D& LineSegment::operator[](int i) const
 {
 	return (*const_cast<LineSegment*>(this))[i];
+}
+
+bool LineSegment::CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D& intersectionPoint) const
+{
+	Ray ray(lineSegment.vertexA, lineSegment.vertexB - lineSegment.vertexA);
+	double lambda = 0.0;
+	if (!ray.CastAgainst(*this, lambda))
+		return false;
+
+	intersectionPoint = ray.CalculateRayPoint(lambda);
+	return true;
 }

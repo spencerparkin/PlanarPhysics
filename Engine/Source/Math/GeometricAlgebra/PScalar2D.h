@@ -26,6 +26,7 @@ namespace PlanarPhysics
 		PScalar2D Inverted() const;
 		PScalar2D Magnitude() const;
 		Rotor2D Exponent() const;
+		bool Invert(PScalar2D& inverse) const;
 
 		double z;
 	};

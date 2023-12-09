@@ -17,6 +17,8 @@ namespace PlanarPhysics
 		double DistanceTo(const Vector2D& point) const;
 		Vector2D NearestPoint(const Vector2D& point) const;
 		double Length() const;
+		double CalculateLineLerpAlpha(const Vector2D& linePoint) const;
+		bool CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D& intersectionPoint) const;
 
 		Vector2D& operator[](int i);
 		const Vector2D& operator[](int i) const;

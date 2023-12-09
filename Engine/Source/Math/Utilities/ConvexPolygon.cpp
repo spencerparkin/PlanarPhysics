@@ -9,11 +9,14 @@ using namespace PlanarPhysics;
 ConvexPolygon::ConvexPolygon()
 {
 	this->vertexArray = new std::vector<Vector2D>();
+	this->edgeLineCacheArray = new std::vector<Line>();
+	this->edgeLineCacheArrayValid = false;
 }
 
 /*virtual*/ ConvexPolygon::~ConvexPolygon()
 {
 	delete this->vertexArray;
+	delete this->edgeLineCacheArray;
 }
 
 bool ConvexPolygon::CalcConvexHull(const std::vector<Vector2D>& pointArray)
@@ -129,6 +132,8 @@ bool ConvexPolygon::CalcConvexHull(const std::vector<Vector2D>& pointArray)
 		this->vertexArray->clear();
 		for (const Vector2D& vertex : newVertexArray)
 			this->vertexArray->push_back(vertex);
+
+		this->edgeLineCacheArrayValid = false;
 	}
 
 	// TODO: Are we sure that all redundant points on the hull are removed?
@@ -180,6 +185,7 @@ bool ConvexPolygon::IsValid() const
 
 bool ConvexPolygon::ContainsPoint(const Vector2D& point, double thickness /*= PLNR_PHY_EPSILON*/) const
 {
+#if false		// This code works, but it's not as quick as the edge cache.
 	for (int i = 0; i < (signed)this->vertexArray->size(); i++)
 	{
 		int j = (i + 1) % this->vertexArray->size();
@@ -191,8 +197,32 @@ bool ConvexPolygon::ContainsPoint(const Vector2D& point, double thickness /*= PL
 		if (det.z > thickness)
 			return false;
 	}
+#else
+	this->UpdateEdgeLineCacheIfNeeded();
+
+	for (const Line& edgeLine : *this->edgeLineCacheArray)
+	{
+		double distance = edgeLine.SignedDistanceTo(point);
+		if (distance > thickness / 2.0)
+			return false;
+	}
+#endif
 
 	return true;
+}
+
+const std::vector<Line>& ConvexPolygon::GetEdgeLineArray() const
+{
+	this->UpdateEdgeLineCacheIfNeeded();
+	
+	return *this->edgeLineCacheArray;
+}
+
+void ConvexPolygon::CalculateIntersection(const ConvexPolygon& polygonA, const ConvexPolygon& polygonB)
+{
+	this->vertexArray->clear();
+
+	// TODO: May write this one day, but there is not yet a need.
 }
 
 bool ConvexPolygon::CalcBoundingBox(BoundingBox& box) const
@@ -226,4 +256,24 @@ const std::vector<Vector2D>& ConvexPolygon::GetVertexArray() const
 std::vector<Vector2D>& ConvexPolygon::GetVertexArray()
 {
 	return *this->vertexArray;
+}
+
+void ConvexPolygon::UpdateEdgeLineCacheIfNeeded() const
+{
+	if (this->edgeLineCacheArrayValid)
+		return;
+
+	this->edgeLineCacheArray->clear();
+
+	for (int i = 0; i < (signed)this->vertexArray->size(); i++)
+	{
+		int j = (i + 1) % this->vertexArray->size();
+
+		const Vector2D& vertexA = (*this->vertexArray)[i];
+		const Vector2D& vertexB = (*this->vertexArray)[j];
+
+		this->edgeLineCacheArray->push_back(Line(LineSegment(vertexB, vertexA)));
+	}
+
+	this->edgeLineCacheArrayValid = true;
 }

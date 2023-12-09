@@ -21,10 +21,8 @@ namespace PlanarPhysics
 		bool CalcBoundingBox(BoundingBox& box) const;
 		bool ContainsPoint(const Vector2D& point, double thickness = PLNR_PHY_EPSILON) const;
 		bool AllPointsOnOrBehindLine(const Line& line) const;
-
-		// TODO: Add routine that calculates the intersection between two convex polygons.
-		//       Make sure that it uses a ray-cast method of doing so so that we get all
-		//       the degenerate cases nailed down.
+		void CalculateIntersection(const ConvexPolygon& polygonA, const ConvexPolygon& polygonB);
+		void UpdateEdgeLineCacheIfNeeded() const;
 
 		const Vector2D& operator[](int i) const;
 		Vector2D& operator[](int i);
@@ -32,7 +30,13 @@ namespace PlanarPhysics
 		const std::vector<Vector2D>& GetVertexArray() const;
 		std::vector<Vector2D>& GetVertexArray();
 
+		const std::vector<Line>& GetEdgeLineArray() const;
+
+		mutable bool edgeLineCacheArrayValid;
+
 	private:
 		std::vector<Vector2D>* vertexArray;
+
+		mutable std::vector<Line>* edgeLineCacheArray;
 	};
 }

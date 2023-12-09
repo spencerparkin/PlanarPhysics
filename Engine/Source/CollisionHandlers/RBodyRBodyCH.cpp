@@ -1,5 +1,6 @@
 #include "RBodyRBodyCH.h"
 #include "PlanarObjects/RigidBody.h"
+#include "Math/Utilities/Ray.h"
 
 using namespace PlanarPhysics;
 
@@ -21,10 +22,6 @@ RBodyRBodyCH::RBodyRBodyCH()
 
 	std::vector<PlanarObject::Contact> contactArray;
 
-	// TODO: It is possible for two polygons to overlap and yet, neither has a vertex contained within the other.
-	//       My collision detection here is flawed.  Use a ray-cast method deligated to the polygon class to find
-	//       the contact points and normals.
-
 	for (const Vector2D& vertexA : bodyA->GetWorldPolygon().GetVertexArray())
 	{
 		PlanarObject::Contact contact;
@@ -45,6 +42,39 @@ RBodyRBodyCH::RBodyRBodyCH()
 			contactArray.push_back(contact);
 		}
 	}
+
+	// This doesn't work, not only because the math is probably wrong, but also because
+	// it may be creating a redundant contact point, so we react doubly to the collision.
+#if 0
+	if (contactArray.size() < 2)
+	{
+		const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
+		const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+
+		for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
+		{
+			int j = (i + 1) % polygonA.GetVertexCount();
+
+			const Vector2D& vertexA = polygonA.GetVertexArray()[i];
+			const Vector2D& vertexB = polygonA.GetVertexArray()[j];
+
+			Ray ray(vertexA, vertexB - vertexA);
+
+			double lambda = 0.0;
+			Vector2D hitNormal;
+			if (ray.CastAgainst(polygonB, lambda, &hitNormal))
+			{
+				PlanarObject::Contact contact;
+				contact.point = ray.CalculateRayPoint(lambda);
+				contact.normal = hitNormal;
+				contact.penetrationDepth = (contact.point - vertexB).Magnitude();
+				contactArray.push_back(contact);
+				if (contactArray.size() == 2)
+					break;
+			}
+		}
+	}
+#endif
 
 	// TODO: Not so sure about this in the case that we have multiple contact points.
 	for (const PlanarObject::Contact& contact : contactArray)

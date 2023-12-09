@@ -82,6 +82,18 @@ Rotor2D PScalar2D::Exponent() const
 	);
 }
 
+bool PScalar2D::Invert(PScalar2D& inverse) const
+{
+	if (this->z == 0.0)
+		return false;
+
+	inverse.z = -this->z / (this->z * this->z);
+	if (::isnan(inverse.z) || ::isinf(inverse.z))
+		return false;
+
+	return true;
+}
+
 namespace PlanarPhysics
 {
 	PScalar2D operator*(const PScalar2D& pscalar, double scalar)
