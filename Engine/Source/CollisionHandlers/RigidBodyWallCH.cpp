@@ -51,7 +51,7 @@ RigidBodyWallCH::RigidBodyWallCH()
 
 		if (relativeVelocity < 0.0)
 		{
-			double coeficientOfRestitution = 0.7;
+			double coeficientOfRestitution = 0.9;
 
 			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contactNormal) * (r ^ contactNormal) / body->inertia);
 

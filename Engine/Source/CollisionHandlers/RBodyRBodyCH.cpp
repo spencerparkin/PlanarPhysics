@@ -101,7 +101,7 @@ RBodyRBodyCH::RBodyRBodyCH()
 
 		if (relativeVelocity < 0.0)
 		{
-			double coeficientOfRestitution = 0.7;
+			double coeficientOfRestitution = 0.9;
 
 			double termA = 1.0 / bodyA->mass - (rA ^ contact.normal) * (rA ^ contact.normal) / bodyA->inertia;
 			double termB = 1.0 / bodyB->mass - (rB ^ contact.normal) * (rB ^ contact.normal) / bodyB->inertia;
