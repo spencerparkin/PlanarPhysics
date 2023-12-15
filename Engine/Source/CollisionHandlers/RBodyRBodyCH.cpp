@@ -43,34 +43,32 @@ RBodyRBodyCH::RBodyRBodyCH()
 		}
 	}
 
-	// This doesn't work, not only because the math is probably wrong, but also because
-	// it may be creating a redundant contact point, so we react doubly to the collision.
 #if 0
-	if (contactArray.size() < 2)
+	const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
+	const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+
+	for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
 	{
-		const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
-		const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+		int j = (i + 1) % polygonA.GetVertexCount();
 
-		for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
+		const Vector2D& vertexA = polygonA.GetVertexArray()[i];
+		const Vector2D& vertexB = polygonA.GetVertexArray()[j];
+
+		Ray ray(vertexA, vertexB - vertexA);
+
+		double lambda = 0.0;
+		Vector2D hitNormal;
+		if (ray.CastAgainst(polygonB, lambda, &hitNormal))
 		{
-			int j = (i + 1) % polygonA.GetVertexCount();
-
-			const Vector2D& vertexA = polygonA.GetVertexArray()[i];
-			const Vector2D& vertexB = polygonA.GetVertexArray()[j];
-
-			Ray ray(vertexA, vertexB - vertexA);
-
-			double lambda = 0.0;
-			Vector2D hitNormal;
-			if (ray.CastAgainst(polygonB, lambda, &hitNormal))
+			Vector2D hitPoint = ray.CalculateRayPoint(lambda);
+			
+			for (const PlanarObject::Contact& contact : contactArray)
 			{
-				PlanarObject::Contact contact;
-				contact.point = ray.CalculateRayPoint(lambda);
-				contact.normal = hitNormal;
-				contact.penetrationDepth = (contact.point - vertexB).Magnitude();
-				contactArray.push_back(contact);
-				if (contactArray.size() == 2)
-					break;
+				if ((contact.point - hitPoint).Magnitude() < PLNR_PHY_EPSILON)
+				{
+					int b = 0;
+					b++;
+				}
 			}
 		}
 	}

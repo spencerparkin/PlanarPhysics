@@ -47,9 +47,15 @@ Vector2D LineSegment::NearestPoint(const Vector2D& point) const
 	return this->vertexA + normal * dot;
 }
 
+double LineSegment::SquareDistanceTo(const Vector2D& point) const
+{
+	Vector2D distanceVector = this->NearestPoint(point) - point;
+	return distanceVector | distanceVector;
+}
+
 double LineSegment::DistanceTo(const Vector2D& point) const
 {
-	return (this->NearestPoint(point) - point).Magnitude();
+	return ::sqrt(this->SquareDistanceTo(point));
 }
 
 double LineSegment::CalculateLineLerpAlpha(const Vector2D& linePoint) const

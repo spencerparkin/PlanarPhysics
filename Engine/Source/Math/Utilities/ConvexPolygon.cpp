@@ -238,6 +238,47 @@ bool ConvexPolygon::CalcBoundingBox(BoundingBox& box) const
 	return true;
 }
 
+int ConvexPolygon::NearestVertexToPoint(const Vector2D& point, double& minSquareDistance) const
+{
+	int j = -1;
+	minSquareDistance = std::numeric_limits<double>::max();
+
+	for (int i = 0; i < (signed)this->vertexArray->size(); i++)
+	{
+		Vector2D distanceVector = point - (*this->vertexArray)[i];
+		double squareDistance = distanceVector | distanceVector;
+		if (squareDistance < minSquareDistance)
+		{
+			minSquareDistance = squareDistance;
+			j = i;
+		}
+	}
+
+	return j;
+}
+
+void ConvexPolygon::NearestEdgeToPoint(const Vector2D& point, LineSegment& nearestEdgeSegment) const
+{
+	double minSquareDistance = std::numeric_limits<double>::max();
+
+	for (int i = 0; i < (signed)this->vertexArray->size(); i++)
+	{
+		int j = (i + 1) % this->vertexArray->size();
+
+		const Vector2D& vertexA = (*this->vertexArray)[i];
+		const Vector2D& vertexB = (*this->vertexArray)[j];
+
+		LineSegment edgeSegment(vertexA, vertexB);
+
+		double squareDistance = edgeSegment.SquareDistanceTo(point);
+		if (squareDistance < minSquareDistance)
+		{
+			minSquareDistance = squareDistance;
+			nearestEdgeSegment = edgeSegment;
+		}
+	}
+}
+
 const Vector2D& ConvexPolygon::operator[](int i) const
 {
 	return (*this->vertexArray)[i];

@@ -27,6 +27,7 @@ namespace PlanarPhysics
 		Vector2D Inverted() const;
 		Vector2D Normalized() const;
 		double Magnitude() const;
+		bool Normalize(double* magnitude = nullptr);
 
 		double x, y;
 	};

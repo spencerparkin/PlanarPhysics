@@ -89,6 +89,22 @@ double Vector2D::Magnitude() const
 	return ::sqrt(*this | *this);
 }
 
+bool Vector2D::Normalize(double* magnitude /*= nullptr*/)
+{
+	double length = this->Magnitude();
+	if (length == 0.0)
+		return false;
+
+	double scale = 1.0 / length;
+	if (::isinf(scale) || ::isnan(scale))
+		return false;
+
+	*this *= scale;
+	if (magnitude)
+		*magnitude = length;
+	return true;
+}
+
 namespace PlanarPhysics
 {
 	Vector2D operator*(const Vector2D& vector, double scalar)

@@ -13,7 +13,8 @@ namespace PlanarPhysics
 		virtual ~LineSegment();
 
 		void operator=(const LineSegment& lineSegment);
-
+		
+		double SquareDistanceTo(const Vector2D& point) const;
 		double DistanceTo(const Vector2D& point) const;
 		Vector2D NearestPoint(const Vector2D& point) const;
 		double Length() const;

@@ -34,13 +34,15 @@ Vector2D Ray::CalculateRayPoint(double lambda) const
 bool Ray::CastAgainst(const LineSegment& lineSegment, double& lambda, double eps /*= PLNR_PHY_EPSILON*/) const
 {
 	Vector2D lineSegVector = lineSegment.vertexB - lineSegment.vertexA;
-	PScalar2D numerator = lineSegment.vertexA ^ this->origin;
+	PScalar2D numerator = (lineSegment.vertexA - this->origin) ^ lineSegVector;
 	PScalar2D denominator = this->direction ^ lineSegVector;
 	PScalar2D denominatorInv;
 	if (!denominator.Invert(denominatorInv))
 		return false;
 
 	lambda = numerator * denominatorInv;
+	if (lambda < 0.0)
+		return false;
 
 	Vector2D linePoint = this->CalculateRayPoint(lambda);
 	double lerpAlpha = lineSegment.CalculateLineLerpAlpha(linePoint);

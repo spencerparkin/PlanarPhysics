@@ -6,6 +6,7 @@ namespace PlanarPhysics
 {
 	class BoundingBox;
 	class Line;
+	class LineSegment;
 
 	class PLANAR_PHYSICS_API ConvexPolygon
 	{
@@ -23,6 +24,8 @@ namespace PlanarPhysics
 		bool AllPointsOnOrBehindLine(const Line& line) const;
 		void CalculateIntersection(const ConvexPolygon& polygonA, const ConvexPolygon& polygonB);
 		void UpdateEdgeLineCacheIfNeeded() const;
+		int NearestVertexToPoint(const Vector2D& point, double& minSquareDistance) const;
+		void NearestEdgeToPoint(const Vector2D& point, LineSegment& nearestEdgeSegment) const;
 
 		const Vector2D& operator[](int i) const;
 		Vector2D& operator[](int i);
