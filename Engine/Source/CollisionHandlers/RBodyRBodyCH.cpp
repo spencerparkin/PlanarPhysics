@@ -43,38 +43,8 @@ RBodyRBodyCH::RBodyRBodyCH()
 		}
 	}
 
-#if 0
-	const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
-	const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
-
-	for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
-	{
-		int j = (i + 1) % polygonA.GetVertexCount();
-
-		const Vector2D& vertexA = polygonA.GetVertexArray()[i];
-		const Vector2D& vertexB = polygonA.GetVertexArray()[j];
-
-		Ray ray(vertexA, vertexB - vertexA);
-
-		double lambda = 0.0;
-		Vector2D hitNormal;
-		if (ray.CastAgainst(polygonB, lambda, &hitNormal))
-		{
-			Vector2D hitPoint = ray.CalculateRayPoint(lambda);
-			
-			for (const PlanarObject::Contact& contact : contactArray)
-			{
-				if ((contact.point - hitPoint).Magnitude() < PLNR_PHY_EPSILON)
-				{
-					int b = 0;
-					b++;
-				}
-			}
-		}
-	}
-#endif
-
 	// TODO: Not so sure about this in the case that we have multiple contact points.
+	//       David Baraff solves a quadratic programming problem in some cases, but I can't understand it.
 	for (const PlanarObject::Contact& contact : contactArray)
 	{
 		bodyA->position += contact.normal * contact.penetrationDepth / 2.0;
@@ -82,6 +52,7 @@ RBodyRBodyCH::RBodyRBodyCH()
 
 		Vector2D rA = contact.point - bodyA->position;
 		Vector2D rB = contact.point - bodyB->position;
+
 		Vector2D contactPointVelocityA = bodyA->velocity + rA * bodyA->angularVelocity;
 		Vector2D contactPointVelocityB = bodyB->velocity + rB * bodyB->angularVelocity;
 
@@ -103,16 +74,50 @@ RBodyRBodyCH::RBodyRBodyCH()
 
 			double termA = 1.0 / bodyA->mass - (rA ^ contact.normal) * (rA ^ contact.normal) / bodyA->inertia;
 			double termB = 1.0 / bodyB->mass - (rB ^ contact.normal) * (rB ^ contact.normal) / bodyB->inertia;
+
 			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (termA + termB);
 
 			Vector2D impulse = j * contact.normal;
+
 			bodyA->velocity += impulse / bodyA->mass;
 			bodyB->velocity -= impulse / bodyB->mass;
 
 			PScalar2D impulsiveTorqueA = rA ^ impulse / bodyA->inertia;
 			PScalar2D impulsiveTorqueB = rB ^ impulse / bodyB->inertia;
+
 			bodyA->angularVelocity += impulsiveTorqueA;
 			bodyB->angularVelocity -= impulsiveTorqueB;
 		}
 	}
+
+	// TODO: Maybe at this point do a hail-marry to make sure the two bodies are just not intersecting anymore at all?
+	//       It's not entirely obvious to me how to do that in every case.
+
+#if 0
+	bodyA->worldPolygonValid = false;
+	bodyB->worldPolygonValid = false;
+
+	const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
+	const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+
+	for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
+	{
+		int j = (i + 1) % polygonA.GetVertexCount();
+
+		const Vector2D& vertexA = polygonA.GetVertexArray()[i];
+		const Vector2D& vertexB = polygonA.GetVertexArray()[j];
+
+		Ray ray(vertexA, vertexB - vertexA);
+
+		double lambda = 0.0;
+		Vector2D hitNormal;
+		if (ray.CastAgainst(polygonB, lambda, &hitNormal))
+		{
+			Vector2D hitPoint = ray.CalculateRayPoint(lambda);
+
+			int b = 0;
+			b++;
+		}
+	}
+#endif
 }
