@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CollisionHandler.h"
+#include "PlanarObject.h"
 
 namespace PlanarPhysics
 {
@@ -11,5 +12,13 @@ namespace PlanarPhysics
 		virtual ~RBodyRBodyCH();
 
 		virtual void HandleCollision(PlanarObject* objectA, PlanarObject* objectB) override;
+
+	private:
+		
+		void AddUniqueContact(const PlanarObject::Contact& contact);
+
+		std::vector<PlanarObject::Contact> contactArray;
+
+		double pointRadius;
 	};
 }

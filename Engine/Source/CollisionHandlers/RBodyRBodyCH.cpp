@@ -6,10 +6,24 @@ using namespace PlanarPhysics;
 
 RBodyRBodyCH::RBodyRBodyCH()
 {
+	this->pointRadius = 0.1;
 }
 
 /*virtual*/ RBodyRBodyCH::~RBodyRBodyCH()
 {
+}
+
+void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
+{
+	for (const PlanarObject::Contact& existingContact : this->contactArray)
+	{
+		Vector2D distanceVector = existingContact.point - contact.point;
+		double squareDistance = distanceVector | distanceVector;
+		if (squareDistance < this->pointRadius)
+			return;
+	}
+
+	this->contactArray.push_back(contact);
 }
 
 /*virtual*/ void RBodyRBodyCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
@@ -20,35 +34,41 @@ RBodyRBodyCH::RBodyRBodyCH()
 	if (!bodyA || !bodyB)
 		return;
 
-	std::vector<PlanarObject::Contact> contactArray;
+	this->contactArray.clear();
 
-	for (const Vector2D& vertexA : bodyA->GetWorldPolygon().GetVertexArray())
+	const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
+	const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+
+	for (const Vector2D& vertexA : polygonA.GetVertexArray())
 	{
 		PlanarObject::Contact contact;
 
-		if (bodyB->PointPenetratesConvexPolygon(vertexA, contact))
+		if (bodyB->PointPenetratesConvexPolygon(vertexA, contact, pointRadius))
 		{
-			contactArray.push_back(contact);
+			this->AddUniqueContact(contact);
 		}
 	}
 
-	for (const Vector2D& vertexB : bodyB->GetWorldPolygon().GetVertexArray())
+	for (const Vector2D& vertexB : polygonB.GetVertexArray())
 	{
 		PlanarObject::Contact contact;
 
-		if (bodyA->PointPenetratesConvexPolygon(vertexB, contact))
+		if (bodyA->PointPenetratesConvexPolygon(vertexB, contact, pointRadius))
 		{
 			contact.normal = -contact.normal;
-			contactArray.push_back(contact);
+			this->AddUniqueContact(contact);
 		}
 	}
 
 	// TODO: Not so sure about this in the case that we have multiple contact points.
 	//       David Baraff solves a quadratic programming problem in some cases, but I can't understand it.
-	for (const PlanarObject::Contact& contact : contactArray)
+	for (const PlanarObject::Contact& contact : this->contactArray)
 	{
 		bodyA->position += contact.normal * contact.penetrationDepth / 2.0;
 		bodyB->position -= contact.normal * contact.penetrationDepth / 2.0;
+
+		bodyA->worldPolygonValid = false;
+		bodyB->worldPolygonValid = false;
 
 		Vector2D rA = contact.point - bodyA->position;
 		Vector2D rB = contact.point - bodyB->position;

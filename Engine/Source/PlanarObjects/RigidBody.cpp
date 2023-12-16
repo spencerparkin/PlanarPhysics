@@ -164,12 +164,33 @@ const ConvexPolygon& RigidBody::GetWorldPolygon() const
 	this->netTorque = PScalar2D(0.0);
 }
 
-bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact) const
+bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact, double vertexRadius /*= 0.1*/) const
 {
 	this->UpdateWorldPolygonIfNeeded();
 
 	if (!this->worldPolygon.ContainsPoint(point))
 		return false;
+
+	for (int i = 0; i < this->worldPolygon.GetVertexCount(); i++)
+	{
+		const Vector2D& vertex = this->worldPolygon.GetVertexArray()[i];
+		Vector2D distanceVector = point - vertex;
+		double distanceSquared = distanceVector | distanceVector;
+		if (distanceSquared < vertexRadius)
+		{
+			contact.point = vertex;
+			contact.penetrationDepth = ::sqrt(distanceSquared);
+			
+			int j = (i + 1) % this->worldPolygon.GetVertexCount();
+			Vector2D normalA = (vertex - this->worldPolygon.GetVertexArray()[j]).Normalized();
+
+			j = (i + this->worldPolygon.GetVertexCount() - 1) % this->worldPolygon.GetVertexCount();
+			Vector2D normalB = (vertex - this->worldPolygon.GetVertexArray()[j]).Normalized();
+
+			contact.normal = (normalA + normalB).Normalized();
+			return true;
+		}
+	}
 
 	contact.penetrationDepth = std::numeric_limits<double>::max();
 

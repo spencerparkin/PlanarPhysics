@@ -39,7 +39,7 @@ namespace PlanarPhysics
 		PScalar2D angularVelocity;
 
 	private:
-		bool PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact) const;
+		bool PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact, double vertexRadius = 0.1) const;
 
 		Vector2D netForce;
 		PScalar2D netTorque;
