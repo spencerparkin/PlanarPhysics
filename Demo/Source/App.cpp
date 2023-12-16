@@ -133,7 +133,7 @@ bool App::HandleKeyboard()
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-#if 0
+#if 1
 							int i = Random::Integer(3, 5);
 							for (int j = 0; j < i; j++)
 								pointArray.push_back(Random::Vector(5.0, 10.0));
@@ -146,44 +146,6 @@ bool App::HandleKeyboard()
 							{
 								fprintf(stderr, "Failed to make shape!");
 							}
-
-							break;
-						}
-						case SDL_SCANCODE_T:
-						{
-							RenderRigidBody* bodyA = this->engine.AddPlanarObject<RenderRigidBody>();
-							bodyA->position = Vector2D(0.0, 0.0);
-							bodyA->velocity = Random::Vector(0.0, 0.0);
-							bodyA->orientation.z = 0.0;
-							bodyA->angularVelocity.z = 0.0;
-							bodyA->r = 255;
-							bodyA->g = 0;
-							bodyA->b = 0;
-
-							std::vector<Vector2D> pointArrayA;
-							pointArrayA.push_back(Vector2D(-5.0, -5.0));
-							pointArrayA.push_back(Vector2D(5.0, -5.0));
-							pointArrayA.push_back(Vector2D(5.0, 5.0));
-							pointArrayA.push_back(Vector2D(-5.0, 5.0));
-
-							bodyA->MakeShape(pointArrayA, 1.0);
-
-							RenderRigidBody* bodyB = this->engine.AddPlanarObject<RenderRigidBody>();
-							bodyB->position = Vector2D(5.0, 9.0);
-							bodyB->velocity = Random::Vector(0.0, 0.0);
-							bodyB->orientation.z = 0.0;
-							bodyB->angularVelocity.z = 0.0;
-							bodyB->r = 0;
-							bodyB->g = 255;
-							bodyB->b = 255;
-
-							std::vector<Vector2D> pointArrayB;
-							pointArrayB.push_back(Vector2D(-5.0, -5.0));
-							pointArrayB.push_back(Vector2D(5.0, -5.0));
-							pointArrayB.push_back(Vector2D(5.0, 5.0));
-							pointArrayB.push_back(Vector2D(-5.0, 5.0));
-
-							bodyB->MakeShape(pointArrayB, 1.0);
 
 							break;
 						}
