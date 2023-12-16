@@ -1,6 +1,6 @@
 #include "RBodyRBodyCH.h"
 #include "PlanarObjects/RigidBody.h"
-#include "Math/Utilities/Ray.h"
+#include "Math/Utilities/Line.h"
 
 using namespace PlanarPhysics;
 
@@ -110,34 +110,64 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 		}
 	}
 
-	// TODO: Maybe at this point do a hail-marry to make sure the two bodies are just not intersecting anymore at all?
-	//       It's not entirely obvious to me how to do that in every case.
+	// At this point, despite all we've done thus far, make darn sure that the two rigid bodies are separated!
+	// Two convex polygons do not overlap if there exists a separation plane between them.  If they really
+	// are separate, then one such plane always exists that contains a face of one of the polygons.  Note that
+	// the analog of this idea in 3 dimensions does not work!  But it does work in 2 dimensions.
 
-#if 0
-	bodyA->worldPolygonValid = false;
-	bodyB->worldPolygonValid = false;
+	bodyA->UpdateWorldPolygonIfNeeded();
+	bodyB->UpdateWorldPolygonIfNeeded();
 
-	const ConvexPolygon& polygonA = bodyA->GetWorldPolygon();
-	const ConvexPolygon& polygonB = bodyB->GetWorldPolygon();
+	polygonA.UpdateEdgeLineCacheIfNeeded();
+	polygonB.UpdateEdgeLineCacheIfNeeded();
 
-	for (int i = 0; i < (signed)polygonA.GetVertexCount(); i++)
+	const std::vector<Line>& edgeLineArrayA = polygonA.GetEdgeLineArray();
+	const std::vector<Line>& edgeLineArrayB = polygonB.GetEdgeLineArray();
+
+	struct SeparationCase
 	{
-		int j = (i + 1) % polygonA.GetVertexCount();
+		double distance;
+		Vector2D normal;
+	};
 
-		const Vector2D& vertexA = polygonA.GetVertexArray()[i];
-		const Vector2D& vertexB = polygonA.GetVertexArray()[j];
+	std::vector<SeparationCase> separationCaseArray;
 
-		Ray ray(vertexA, vertexB - vertexA);
+	for (const Line& edgeLineA : edgeLineArrayA)
+	{
+		double penetrationDistance = 0.0;
+		if (bodyB->AllVerticesOnOrInFrontOfLine(edgeLineA, penetrationDistance))
+			return;
 
-		double lambda = 0.0;
-		Vector2D hitNormal;
-		if (ray.CastAgainst(polygonB, lambda, &hitNormal))
+		separationCaseArray.push_back(SeparationCase{ ::abs(penetrationDistance), -edgeLineA.normal });
+	}
+
+	for (const Line& edgeLineB : edgeLineArrayB)
+	{
+		double penetrationDistance = 0.0;
+		if (bodyA->AllVerticesOnOrInFrontOfLine(edgeLineB, penetrationDistance))
+			return;
+
+		separationCaseArray.push_back(SeparationCase{ ::abs(penetrationDistance), edgeLineB.normal });
+	}
+
+	double smallestDistance = std::numeric_limits<double>::max();
+	const SeparationCase* chosenCase = nullptr;
+	for (const SeparationCase& separationCase: separationCaseArray)
+	{
+		if (separationCase.distance < smallestDistance)
 		{
-			Vector2D hitPoint = ray.CalculateRayPoint(lambda);
-
-			int b = 0;
-			b++;
+			smallestDistance = separationCase.distance;
+			chosenCase = &separationCase;
 		}
 	}
-#endif
+
+	if (chosenCase)
+	{
+		// After this nudge, the bodies *should* no longer be overlapping.
+		bodyA->position += chosenCase->normal * chosenCase->distance / 2.0;
+		bodyB->position -= chosenCase->normal * chosenCase->distance / 2.0;
+
+		bodyA->worldPolygonValid = false;
+		bodyB->worldPolygonValid = false;
+	}
 }

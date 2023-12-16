@@ -4,6 +4,7 @@
 #include "Math/GeometricAlgebra/PScalar2D.h"
 #include "Math/Utilities/BoundingBox.h"
 #include "Math/Utilities/LineSegment.h"
+#include "Math/Utilities/Line.h"
 
 using namespace PlanarPhysics;
 
@@ -214,6 +215,25 @@ bool RigidBody::PointPenetratesConvexPolygon(const Vector2D& point, Contact& con
 	}
 
 	return true;
+}
+
+bool RigidBody::AllVerticesOnOrInFrontOfLine(const Line& line, double& penetrationDistance, double lineThickness /*= PLNR_PHY_EPSILON*/) const
+{
+	this->UpdateWorldPolygonIfNeeded();
+
+	penetrationDistance = std::numeric_limits<double>::max();
+
+	for (const Vector2D& vertex : this->worldPolygon.GetVertexArray())
+	{
+		double signedDistance = line.SignedDistanceTo(vertex);
+		if (signedDistance < penetrationDistance)
+			penetrationDistance = signedDistance;
+	}
+
+	if (penetrationDistance >= -lineThickness)
+		return true;
+
+	return false;
 }
 
 /*virtual*/ void RigidBody::CalcBoundingBox(BoundingBox& box) const

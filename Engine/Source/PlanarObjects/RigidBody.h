@@ -40,6 +40,7 @@ namespace PlanarPhysics
 
 	private:
 		bool PointPenetratesConvexPolygon(const Vector2D& point, Contact& contact, double vertexRadius = 0.1) const;
+		bool AllVerticesOnOrInFrontOfLine(const Line& line, double& penetrationDistance, double lineThickness = PLNR_PHY_EPSILON) const;
 
 		Vector2D netForce;
 		PScalar2D netTorque;
