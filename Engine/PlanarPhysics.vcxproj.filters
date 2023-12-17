@@ -85,6 +85,9 @@
     <ClInclude Include="Source\BoxTree.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\CollisionHandlers\RigidBodyBallCH.h">
+      <Filter>Source\CollisionHandlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp">
@@ -146,6 +149,9 @@
     </ClCompile>
     <ClCompile Include="Source\BoxTree.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CollisionHandlers\RigidBodyBallCH.cpp">
+      <Filter>Source\CollisionHandlers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

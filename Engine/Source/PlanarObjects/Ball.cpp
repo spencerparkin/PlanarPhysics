@@ -39,6 +39,11 @@ double Ball::Mass() const
 	return this->density * this->Area();
 }
 
+double Ball::Inertia() const
+{
+	return PLNR_PHY_PI * (this->radius * this->radius * this->radius * this->radius) / 4.0;
+}
+
 /*virtual*/ void Ball::Integrate(double deltaTime)
 {
 	Vector2D acceleration = this->netForce / this->Mass();

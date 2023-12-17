@@ -11,6 +11,7 @@ namespace PlanarPhysics
 	{
 		friend class Engine;
 		friend class RigidBodyWallCH;
+		friend class RigidBodyBallCH;
 		friend class RBodyRBodyCH;
 
 	public:

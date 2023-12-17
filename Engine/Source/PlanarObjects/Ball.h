@@ -27,6 +27,7 @@ namespace PlanarPhysics
 	public:
 		double Area() const;
 		double Mass() const;
+		double Inertia() const;
 	
 		Vector2D position;
 		Vector2D velocity;

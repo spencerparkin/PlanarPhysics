@@ -65,6 +65,10 @@ void App::MakeWalls()
 	RenderWall* rightWall = this->engine.AddPlanarObject<RenderWall>();
 	rightWall->lineSeg.vertexA = Vector2D(49.5, -49.5);
 	rightWall->lineSeg.vertexB = Vector2D(49.5, 49.5);
+
+	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
+	wallA->lineSeg.vertexA = Vector2D(-5.0, 0.0);
+	wallA->lineSeg.vertexB = Vector2D(5.0, 0.0);
 }
 
 int App::Run()
@@ -133,15 +137,12 @@ bool App::HandleKeyboard()
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
-#if 1
-							int i = Random::Integer(3, 5);
-							for (int j = 0; j < i; j++)
-								pointArray.push_back(Random::Vector(5.0, 10.0));
-#else
-							pointArray.push_back(Vector2D(-8.0, -5.0));
-							pointArray.push_back(Vector2D(8.0, -5.0));
-							pointArray.push_back(Vector2D(8.0, 5.0));
-#endif
+
+							pointArray.push_back(Vector2D(-8.0, -5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(8.0, -5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(8.0, 5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(-8.0, 5.0) + Random::Vector(0.5, 1.5));
+
 							if (!body->MakeShape(pointArray, 1.0))
 							{
 								fprintf(stderr, "Failed to make shape!");

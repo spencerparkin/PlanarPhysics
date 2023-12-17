@@ -24,6 +24,7 @@
     <ClInclude Include="Source\CollisionHandlers\BallBallCH.h" />
     <ClInclude Include="Source\CollisionHandlers\BallWallCH.h" />
     <ClInclude Include="Source\CollisionHandlers\RBodyRBodyCH.h" />
+    <ClInclude Include="Source\CollisionHandlers\RigidBodyBallCH.h" />
     <ClInclude Include="Source\CollisionHandlers\RigidBodyWallCH.h" />
     <ClInclude Include="Source\Common.h" />
     <ClInclude Include="Source\Engine.h" />
@@ -47,6 +48,7 @@
     <ClCompile Include="Source\CollisionHandlers\BallBallCH.cpp" />
     <ClCompile Include="Source\CollisionHandlers\BallWallCH.cpp" />
     <ClCompile Include="Source\CollisionHandlers\RBodyRBodyCH.cpp" />
+    <ClCompile Include="Source\CollisionHandlers\RigidBodyBallCH.cpp" />
     <ClCompile Include="Source\CollisionHandlers\RigidBodyWallCH.cpp" />
     <ClCompile Include="Source\Engine.cpp" />
     <ClCompile Include="Source\Math\GeometricAlgebra\Multivector2D.cpp" />
