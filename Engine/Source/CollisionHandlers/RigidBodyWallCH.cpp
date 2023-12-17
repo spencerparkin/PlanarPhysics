@@ -26,25 +26,71 @@ RigidBodyWallCH::RigidBodyWallCH()
 			return;
 	}
 
-	body->UpdateWorldPolygonIfNeeded();
+	std::vector<PlanarObject::Contact> contactArray;
 
-	Vector2D contactNormal = wall->Normal();
+	const ConvexPolygon& polygon = body->GetWorldPolygon();
 
-	for (const Vector2D& vertex : body->GetWorldPolygon().GetVertexArray())
+	for (int i = 0; i < polygon.GetVertexCount(); i++)
 	{
-		Vector2D nearestPoint = wall->lineSeg.NearestPoint(vertex);
-		Vector2D direction = vertex - nearestPoint;
-		double penetrationDistance = direction | contactNormal;
-		if (penetrationDistance >= 0.0)
-			continue;
+		int j = (i + 1) % polygon.GetVertexCount();
 
-		body->position -= contactNormal * penetrationDistance;
-		Vector2D contactPoint = vertex - contactNormal * penetrationDistance;
+		const Vector2D& vertexA = polygon.GetVertexArray()[i];
+		const Vector2D& vertexB = polygon.GetVertexArray()[j];
 
-		Vector2D r = contactPoint - body->position;
+		LineSegment edgeSegment(vertexA, vertexB);
+
+		PlanarObject::Contact contact;
+
+		if (edgeSegment.CalcIntersectionPoint(wall->lineSeg, contact.point))
+		{
+			bool containsVertexA = polygon.ContainsPoint(wall->lineSeg.vertexA);
+			bool containsVertexB = polygon.ContainsPoint(wall->lineSeg.vertexB);
+
+			if (containsVertexA || containsVertexB)
+			{
+				contact.normal = ((vertexB - vertexA) * PScalar2D(1.0)).Normalized();
+
+				if (containsVertexA)
+					contact.penetrationDepth = edgeSegment.DistanceTo(vertexA);
+				else
+					contact.penetrationDepth = edgeSegment.DistanceTo(vertexB);
+			}
+			else
+			{
+				contact.normal = wall->Normal();
+
+				const Vector2D* chosenVertex = nullptr;
+				double minDistance = std::numeric_limits<double>::max();
+				for (const Vector2D& vertex : polygon.GetVertexArray())
+				{
+					double distance = wall->lineSeg.DistanceTo(vertex);
+					if (distance < minDistance)
+					{
+						minDistance = distance;
+						chosenVertex = &vertex;
+					}
+				}
+
+				if ((contact.normal | (body->position - *chosenVertex)) < 0.0)
+					contact.normal = -contact.normal;
+
+				contact.penetrationDepth = minDistance;
+			}
+
+			contactArray.push_back(contact);
+		}
+	}
+
+	// TODO: Again, not so sure about this when there is more than one contact to address.
+	for(const PlanarObject::Contact& contact : contactArray)
+	{
+		body->position += contact.normal * contact.penetrationDepth;
+		body->worldPolygonValid = false;
+
+		Vector2D r = contact.point - body->position;
 		Vector2D contactPointVelocity = body->velocity + r * body->angularVelocity;
-		double relativeVelocity = contactNormal | contactPointVelocity;
-		if (::abs(relativeVelocity) < 0.2)
+		double relativeVelocity = contact.normal | contactPointVelocity;
+		if (::abs(relativeVelocity) < 0.5)
 			body->inRestingContact = true;
 		else
 			body->inRestingContact = false;
@@ -53,9 +99,9 @@ RigidBodyWallCH::RigidBodyWallCH()
 		{
 			double coeficientOfRestitution = 0.9;
 
-			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contactNormal) * (r ^ contactNormal) / body->inertia);
+			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contact.normal) * (r ^ contact.normal) / body->inertia);
 
-			Vector2D impulse = j * contactNormal;
+			Vector2D impulse = j * contact.normal;
 			body->velocity += impulse / body->mass;
 
 			PScalar2D impulsiveTorque = r ^ impulse / body->inertia;

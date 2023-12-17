@@ -83,6 +83,9 @@ bool LineSegment::CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D
 	if (!ray.CastAgainst(*this, lambda))
 		return false;
 
+	if (lambda < 0.0 || lambda > 1.0)
+		return false;
+
 	intersectionPoint = ray.CalculateRayPoint(lambda);
 	return true;
 }
