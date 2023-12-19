@@ -89,3 +89,22 @@ bool LineSegment::CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D
 	intersectionPoint = ray.CalculateRayPoint(lambda);
 	return true;
 }
+
+bool LineSegment::SameGeometryAs(const LineSegment& lineSegment, double tolerance /*= PLNR_PHY_EPSILON*/) const
+{
+	double squareTolerance = tolerance * tolerance;
+
+	Vector2D distanceVectorA = lineSegment.vertexA - this->vertexA;
+	Vector2D distanceVectorB = lineSegment.vertexB - this->vertexB;
+
+	if ((distanceVectorA | distanceVectorA) < squareTolerance && (distanceVectorB | distanceVectorB) < squareTolerance)
+		return true;
+
+	distanceVectorA = lineSegment.vertexA - this->vertexB;
+	distanceVectorB = lineSegment.vertexB - this->vertexA;
+
+	if ((distanceVectorA | distanceVectorA) < squareTolerance && (distanceVectorB | distanceVectorB) < squareTolerance)
+		return true;
+
+	return false;
+}
