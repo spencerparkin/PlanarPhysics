@@ -46,6 +46,7 @@ namespace PlanarPhysics
 		virtual void DeleteSelf();	// May need to override this so that deletion happens in proper heap.
 		virtual void AdvanceBegin();
 		virtual void AdvanceEnd();
+		virtual bool IsStatic() const;
 
 		uint32_t flags;
 	};

@@ -41,3 +41,8 @@ void PlanarObject::SetFlags(uint32_t flags)
 {
 	delete this;
 }
+
+/*virtual*/ bool PlanarObject::IsStatic() const
+{
+	return false;
+}

@@ -47,3 +47,8 @@ Vector2D Wall::Normal() const
 	box.max = box.min;
 	box.ExpandToIncludePoint(this->lineSeg.vertexB);
 }
+
+/*virtual*/ bool Wall::IsStatic() const
+{
+	return true;
+}

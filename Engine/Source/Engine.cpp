@@ -103,10 +103,12 @@ void Engine::Tick()
 		for (PlanarObject* object : *this->planarObjectArray)
 			object->UpdateBoxTreeLocation(&this->boxTree);
 
-		// TODO: This is still very slow?  Profile to figure out where we're spending so much time.
 		std::unordered_set<uint64_t> pairSet;
 		for (PlanarObject* objectA : *this->planarObjectArray)
 		{
+			if (objectA->IsStatic())
+				continue;
+
 			this->boxTree.ForAllOverlaps(objectA, [this, objectA, &pairSet](BoxTree::Member* member) {
 				auto objectB = dynamic_cast<PlanarObject*>(member);
 				if (objectB != objectA)
