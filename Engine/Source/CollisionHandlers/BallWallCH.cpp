@@ -40,8 +40,7 @@ BallWallCH::BallWallCH()
 	if (relativeVelocity > 0.0)
 		return;
 
-	double coeficientOfRestitution = 0.9;	// This ranges 0 to 1.
-	double impulseMag = (1.0 + coeficientOfRestitution) * ::fabs(relativeVelocity);
+	double impulseMag = (1.0 + this->coeficientOfRestitution) * ::fabs(relativeVelocity);
 	Vector2D impulse = contactNormal * impulseMag;
 	ball->velocity += impulse;
 }

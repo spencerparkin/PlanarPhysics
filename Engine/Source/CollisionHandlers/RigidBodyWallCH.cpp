@@ -97,9 +97,7 @@ RigidBodyWallCH::RigidBodyWallCH()
 
 		if (relativeVelocity < 0.0)
 		{
-			double coeficientOfRestitution = 0.9;
-
-			double j = -(1.0 + coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contact.normal) * (r ^ contact.normal) / body->inertia);
+			double j = -(1.0 + this->coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contact.normal) * (r ^ contact.normal) / body->inertia);
 
 			Vector2D impulse = j * contact.normal;
 			body->velocity += impulse / body->mass;

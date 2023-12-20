@@ -14,5 +14,7 @@ namespace PlanarPhysics
 		virtual ~CollisionHandler();
 
 		virtual void HandleCollision(PlanarObject* objectA, PlanarObject* objectB) = 0;
+
+		double coeficientOfRestitution;
 	};
 }

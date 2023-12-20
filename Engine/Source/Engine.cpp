@@ -69,6 +69,19 @@ void Engine::Clear()
 	this->planarObjectArray->clear();
 }
 
+void Engine::SetCoefOfRestForAllCHs(double coeficientOfRestitution)
+{
+	for (int i = 0; i < (int)PlanarObject::Type::NUM_TYPES; i++)
+	{
+		for (int j = 0; j < (int)PlanarObject::Type::NUM_TYPES; j++)
+		{
+			CollisionHandler* collisionHandler = this->collisionHandlerMatrix[i][j];
+			if (collisionHandler)
+				collisionHandler->coeficientOfRestitution = coeficientOfRestitution;
+		}
+	}
+}
+
 void Engine::Tick()
 {
 	if (currentTime == 0.0)

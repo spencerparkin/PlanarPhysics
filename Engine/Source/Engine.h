@@ -29,6 +29,7 @@ namespace PlanarPhysics
 		void Tick();
 		void SetWorldBox(const BoundingBox& worldBox);
 		const BoundingBox& GetWorldBox() const;
+		void SetCoefOfRestForAllCHs(double coeficientOfRestitution);
 
 		Vector2D accelerationDueToGravity;
 
