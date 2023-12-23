@@ -22,6 +22,9 @@ namespace PlanarPhysics
 		bool CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D& intersectionPoint) const;
 		bool SameGeometryAs(const LineSegment& lineSegment, double tolerance = PLNR_PHY_EPSILON) const;
 
+		// TODO: Add static method for consolidating a list of line-segments by
+		//       adjacency and collinearity.
+
 		Vector2D& operator[](int i);
 		const Vector2D& operator[](int i) const;
 

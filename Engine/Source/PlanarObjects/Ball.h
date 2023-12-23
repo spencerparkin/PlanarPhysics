@@ -29,6 +29,8 @@ namespace PlanarPhysics
 		double Mass() const;
 		double Inertia() const;
 	
+		// TODO: Add angular velocity and a net-torque force.  Apply torque when
+		//       in resting contact so that the ball can, e.g., roll across the floor.
 		Vector2D position;
 		Vector2D velocity;
 		double radius;
