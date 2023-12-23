@@ -27,10 +27,6 @@ RigidBodyBallCH::RigidBodyBallCH()
 			return;
 	}
 
-	// TODO: There is a bug here where rigid bodies are tunneling through walls,
-	//       and not reacting correctly, maybe in the case that the wall normal
-	//       is in an unexpected direction.  Fix it.
-
 	body->UpdateWorldPolygonIfNeeded();
 
 	const ConvexPolygon& worldPolygon = body->GetWorldPolygon();
