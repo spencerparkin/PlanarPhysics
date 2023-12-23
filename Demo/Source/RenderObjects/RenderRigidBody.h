@@ -11,6 +11,7 @@ public:
 
 	static RenderRigidBody* Create();
 
+	virtual PlanarObject* CreateNew() const override;
 	virtual void Render(DrawHelper& drawHelper) const override;
 	virtual void DeleteSelf() override;
 };

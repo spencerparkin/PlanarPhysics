@@ -24,6 +24,11 @@ Ball::Ball()
 	return new Ball();
 }
 
+/*virtual*/ PlanarObject* Ball::CreateNew() const
+{
+	return new Ball();
+}
+
 /*virtual*/ PlanarObject::Type Ball::GetType() const
 {
 	return Type::BALL;

@@ -16,6 +16,8 @@ namespace PlanarPhysics
 		static Type StaticType();
 		static Wall* Create();
 
+		virtual PlanarObject* CreateNew() const override;
+
 	protected:
 		virtual Type GetType() const override;
 		virtual void Integrate(double deltaTime) override;

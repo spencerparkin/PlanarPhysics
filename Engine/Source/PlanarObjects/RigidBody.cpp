@@ -30,6 +30,11 @@ RigidBody::RigidBody()
 	return new RigidBody();
 }
 
+/*virtual*/ PlanarObject* RigidBody::CreateNew() const
+{
+	return new RigidBody();
+}
+
 /*virtual*/ PlanarObject::Type RigidBody::GetType() const
 {
 	return Type::RIGID_BODY;

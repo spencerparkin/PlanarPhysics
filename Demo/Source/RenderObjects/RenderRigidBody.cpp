@@ -16,6 +16,11 @@ RenderRigidBody::RenderRigidBody()
 	return new RenderRigidBody();
 }
 
+/*virtual*/ PlanarObject* RenderRigidBody::CreateNew() const
+{
+	return new RenderRigidBody();
+}
+
 /*virtual*/ void RenderRigidBody::Render(DrawHelper& drawHelper) const
 {
 	const std::vector<Vector2D>& worldVertexArray = this->GetWorldPolygon().GetVertexArray();

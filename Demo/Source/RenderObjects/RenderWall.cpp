@@ -16,6 +16,11 @@ RenderWall::RenderWall()
 	return new RenderWall();
 }
 
+/*virtual*/ PlanarObject* RenderWall::CreateNew() const
+{
+	return new RenderWall();
+}
+
 /*virtual*/ void RenderWall::Render(DrawHelper& drawHelper) const
 {
 	drawHelper.DrawLine(this->lineSeg.vertexA, this->lineSeg.vertexB, this->r, this->b, this->g);

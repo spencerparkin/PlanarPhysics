@@ -28,6 +28,7 @@ namespace PlanarPhysics
 		Vector2D Normalized() const;
 		double Magnitude() const;
 		bool Normalize(double* magnitude = nullptr);
+		bool IsPoint(const Vector2D& point, double tolerance = PLNR_PHY_EPSILON) const;
 
 		double x, y;
 	};

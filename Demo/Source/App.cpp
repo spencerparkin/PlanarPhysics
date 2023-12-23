@@ -58,9 +58,13 @@ void App::MakeWalls()
 	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
 	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
 
-	RenderWall* leftWall = this->engine.AddPlanarObject<RenderWall>();
-	leftWall->lineSeg.vertexA = Vector2D(-49.5, 49.5);
-	leftWall->lineSeg.vertexB = Vector2D(-49.5, -49.5);
+	RenderWall* leftWallA = this->engine.AddPlanarObject<RenderWall>();
+	leftWallA->lineSeg.vertexA = Vector2D(-49.5, 49.5);
+	leftWallA->lineSeg.vertexB = Vector2D(-49.5, 0);
+
+	RenderWall* leftWallB = this->engine.AddPlanarObject<RenderWall>();
+	leftWallB->lineSeg.vertexB = Vector2D(-49.5, 0);
+	leftWallB->lineSeg.vertexA = Vector2D(-49.5, -49.5);
 
 	RenderWall* rightWall = this->engine.AddPlanarObject<RenderWall>();
 	rightWall->lineSeg.vertexA = Vector2D(49.5, -49.5);
@@ -69,6 +73,8 @@ void App::MakeWalls()
 	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
 	wallA->lineSeg.vertexA = Vector2D(-5.0, 0.0);
 	wallA->lineSeg.vertexB = Vector2D(5.0, 0.0);
+
+	this->engine.ConsolidateWalls();
 }
 
 int App::Run()

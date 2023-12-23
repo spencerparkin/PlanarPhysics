@@ -21,9 +21,8 @@ namespace PlanarPhysics
 		double CalculateLineLerpAlpha(const Vector2D& linePoint) const;
 		bool CalcIntersectionPoint(const LineSegment& lineSegment, Vector2D& intersectionPoint) const;
 		bool SameGeometryAs(const LineSegment& lineSegment, double tolerance = PLNR_PHY_EPSILON) const;
-
-		// TODO: Add static method for consolidating a list of line-segments by
-		//       adjacency and collinearity.
+		bool Merge(const LineSegment& lineSegA, const LineSegment& lineSegB, double tolerance = PLNR_PHY_EPSILON);
+		bool ContainsPoint(const Vector2D& point, double tolerance = PLNR_PHY_EPSILON) const;
 
 		Vector2D& operator[](int i);
 		const Vector2D& operator[](int i) const;

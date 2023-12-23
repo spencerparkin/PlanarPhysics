@@ -1,6 +1,8 @@
 #include "RenderBall.h"
 #include "DrawHelper.h"
 
+using namespace PlanarPhysics;
+
 RenderBall::RenderBall()
 {
 }
@@ -10,6 +12,11 @@ RenderBall::RenderBall()
 }
 
 /*static*/ RenderBall* RenderBall::Create()
+{
+	return new RenderBall();
+}
+
+/*virtual*/ PlanarObject* RenderBall::CreateNew() const
 {
 	return new RenderBall();
 }

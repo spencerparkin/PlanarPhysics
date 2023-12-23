@@ -105,6 +105,13 @@ bool Vector2D::Normalize(double* magnitude /*= nullptr*/)
 	return true;
 }
 
+bool Vector2D::IsPoint(const Vector2D& point, double tolerance /*= PLNR_PHY_EPSILON*/) const
+{
+	Vector2D distanceVector = *this - point;
+	double squareDistance = distanceVector | distanceVector;
+	return squareDistance < tolerance * tolerance;
+}
+
 namespace PlanarPhysics
 {
 	Vector2D operator*(const Vector2D& vector, double scalar)

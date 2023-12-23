@@ -29,6 +29,7 @@ namespace PlanarPhysics
 		};
 
 		virtual Type GetType() const = 0;
+		virtual PlanarObject* CreateNew() const = 0;
 
 		uint32_t GetFlags() const;
 		void SetFlags(uint32_t flags);

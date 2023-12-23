@@ -7,6 +7,7 @@
 
 namespace PlanarPhysics
 {
+	class Wall;
 	class CollisionHandler;
 
 	class PLANAR_PHYSICS_API Engine
@@ -30,10 +31,13 @@ namespace PlanarPhysics
 		void SetWorldBox(const BoundingBox& worldBox);
 		const BoundingBox& GetWorldBox() const;
 		void SetCoefOfRestForAllCHs(double coeficientOfRestitution);
+		void ConsolidateWalls();
 
 		Vector2D accelerationDueToGravity;
 
 	private:
+
+		Wall* MergeWalls(const Wall* wallA, const Wall* wallB);
 
 		CollisionHandler* collisionHandlerMatrix[(int)PlanarObject::Type::NUM_TYPES][(int)PlanarObject::Type::NUM_TYPES];
 		std::vector<PlanarObject*>* planarObjectArray;

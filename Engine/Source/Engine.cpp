@@ -151,3 +151,60 @@ void Engine::Tick()
 		currentTime += deltaTime;
 	}
 }
+
+void Engine::ConsolidateWalls()
+{
+	std::list<Wall*> wallList;
+	std::list<PlanarObject*> otherStuffList;
+
+	for (PlanarObject* object : *this->planarObjectArray)
+	{
+		Wall* wall = dynamic_cast<Wall*>(object);
+		if (wall)
+			wallList.push_back(wall);
+		else
+			otherStuffList.push_back(object);
+	}
+
+	this->planarObjectArray->clear();
+
+	while (wallList.size() > 0)
+	{
+		std::list<Wall*>::iterator iter = wallList.begin();
+		Wall* wallA = *iter;
+		wallList.erase(iter);
+
+		bool merged = false;
+		for (iter = wallList.begin(); iter != wallList.end(); iter++)
+		{
+			Wall* wallB = *iter;
+			Wall* mergedWall = this->MergeWalls(wallA, wallB);
+			if (mergedWall)
+			{
+				wallList.erase(iter);
+				delete wallA;
+				delete wallB;
+				wallList.push_back(mergedWall);
+				merged = true;
+				break;
+			}
+		}
+
+		if (!merged)
+			this->planarObjectArray->push_back(wallA);
+	}
+
+	for (PlanarObject* object : otherStuffList)
+		this->planarObjectArray->push_back(object);
+}
+
+Wall* Engine::MergeWalls(const Wall* wallA, const Wall* wallB)
+{
+	LineSegment lineSeg;
+	if (!lineSeg.Merge(wallA->lineSeg, wallB->lineSeg))
+		return nullptr;
+
+	Wall* wall = (Wall*)wallA->CreateNew();
+	wall->lineSeg = lineSeg;
+	return wall;
+}

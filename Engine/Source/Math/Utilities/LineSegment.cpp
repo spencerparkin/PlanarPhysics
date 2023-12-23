@@ -66,9 +66,7 @@ double LineSegment::CalculateLineLerpAlpha(const Vector2D& linePoint) const
 
 Vector2D& LineSegment::operator[](int i)
 {
-	if (i % 2 == 0)
-		return this->vertexA;
-	return this->vertexB;
+	return (i % 2 == 0) ? this->vertexA : this->vertexB;
 }
 
 const Vector2D& LineSegment::operator[](int i) const
@@ -107,4 +105,51 @@ bool LineSegment::SameGeometryAs(const LineSegment& lineSegment, double toleranc
 		return true;
 
 	return false;
+}
+
+bool LineSegment::ContainsPoint(const Vector2D& point, double tolerance /*= PLNR_PHY_EPSILON*/) const
+{
+	return this->SquareDistanceTo(point) < tolerance * tolerance;
+}
+
+bool LineSegment::Merge(const LineSegment& lineSegA, const LineSegment& lineSegB, double tolerance /*= PLNR_PHY_EPSILON*/)
+{
+	Vector2D point;
+
+	if (lineSegA.SameGeometryAs(lineSegB))
+	{
+		*this = lineSegA;
+		return true;
+	}
+
+	if (lineSegA.vertexA.IsPoint(lineSegB.vertexA, tolerance))
+	{
+		this->vertexA = lineSegA.vertexB;
+		this->vertexB = lineSegB.vertexB;
+		point = (lineSegA.vertexA + lineSegB.vertexA) / 2.0;
+	}
+	else if (lineSegA.vertexA.IsPoint(lineSegB.vertexB, tolerance))
+	{
+		this->vertexA = lineSegA.vertexB;
+		this->vertexB = lineSegB.vertexA;
+		point = (lineSegA.vertexA + lineSegB.vertexB) / 2.0;
+	}
+	else if (lineSegA.vertexB.IsPoint(lineSegB.vertexA, tolerance))
+	{
+		this->vertexA = lineSegA.vertexA;
+		this->vertexB = lineSegB.vertexB;
+		point = (lineSegA.vertexB + lineSegB.vertexA) / 2.0;
+	}
+	else if (lineSegA.vertexB.IsPoint(lineSegB.vertexB, tolerance))
+	{
+		this->vertexA = lineSegA.vertexA;
+		this->vertexB = lineSegB.vertexA;
+		point = (lineSegA.vertexB + lineSegB.vertexB) / 2.0;
+	}
+	else
+	{
+		return false;
+	}
+
+	return this->ContainsPoint(point, tolerance);
 }

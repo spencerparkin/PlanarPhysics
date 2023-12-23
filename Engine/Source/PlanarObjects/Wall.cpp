@@ -21,6 +21,11 @@ Wall::Wall()
 	return new Wall();
 }
 
+/*virtual*/ PlanarObject* Wall::CreateNew() const
+{
+	return new Wall();
+}
+
 /*virtual*/ PlanarObject::Type Wall::GetType() const
 {
 	return Type::WALL;
