@@ -90,11 +90,6 @@ RigidBodyWallCH::RigidBodyWallCH()
 		Vector2D r = contact.point - body->position;
 		Vector2D contactPointVelocity = body->velocity + r * body->angularVelocity;
 		double relativeVelocity = contact.normal | contactPointVelocity;
-		if (::abs(relativeVelocity) < 0.5)
-			body->inRestingContact = true;
-		else
-			body->inRestingContact = false;
-
 		if (relativeVelocity < 0.0)
 		{
 			double j = -(1.0 + this->coeficientOfRestitution) * relativeVelocity / (1.0 / body->mass - (r ^ contact.normal) * (r ^ contact.normal) / body->inertia);

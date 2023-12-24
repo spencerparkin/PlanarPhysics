@@ -7,7 +7,6 @@ Ball::Ball()
 {
 	this->radius = 1.0;
 	this->density = 1.0;
-	this->inRestingContact = false;
 }
 
 /*virtual*/ Ball::~Ball()
@@ -64,13 +63,6 @@ double Ball::Inertia() const
 	if ((this->flags & PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY) != 0)
 	{
 		this->netForce += engine->accelerationDueToGravity * this->Mass();
-	}
-
-	if (this->inRestingContact)
-	{
-		double frictionCoeficient = 0.5;
-		Vector2D frictionForce = this->Mass() * this->velocity * -1.0 * frictionCoeficient;
-		this->netForce += frictionForce;
 	}
 }
 

@@ -36,7 +36,6 @@ BallWallCH::BallWallCH()
 	ball->position += contactNormal * (ball->radius - distance);
 
 	double relativeVelocity = contactNormal | ball->velocity;
-	ball->inRestingContact = ::fabs(relativeVelocity) < 0.05;
 	if (relativeVelocity > 0.0)
 		return;
 

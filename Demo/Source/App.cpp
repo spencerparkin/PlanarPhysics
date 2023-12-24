@@ -78,7 +78,6 @@ void App::MakeWalls()
 #else
 
 	// TODO: This helps us reproduce a tunneling bug.
-	//       Also, rigid-bodies don't slide very well along slanted walls.
 
 	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
 	wallA->lineSeg.vertexA = Vector2D(-50.0, 0.0);

@@ -77,17 +77,6 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 		Vector2D contactPointVelocityB = bodyB->velocity + rB * bodyB->angularVelocity;
 
 		double relativeVelocity = contact.normal | (contactPointVelocityA - contactPointVelocityB);
-		if (::abs(relativeVelocity) < 0.2)
-		{
-			bodyA->inRestingContact = true;
-			bodyB->inRestingContact = true;
-		}
-		else
-		{
-			bodyA->inRestingContact = false;
-			bodyB->inRestingContact = false;
-		}
-
 		if (relativeVelocity < 0.0)
 		{
 			double termA = 1.0 / bodyA->mass - (rA ^ contact.normal) * (rA ^ contact.normal) / bodyA->inertia;

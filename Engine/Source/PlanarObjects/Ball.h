@@ -37,8 +37,5 @@ namespace PlanarPhysics
 		double radius;
 		double density;
 		Vector2D netForce;
-
-	private:
-		bool inRestingContact;
 	};
 }

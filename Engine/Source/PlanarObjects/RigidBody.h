@@ -48,7 +48,6 @@ namespace PlanarPhysics
 		PScalar2D netTorque;
 		double inertia;
 		double mass;
-		bool inRestingContact;
 
 		ConvexPolygon localPolygon;
 		mutable ConvexPolygon worldPolygon;

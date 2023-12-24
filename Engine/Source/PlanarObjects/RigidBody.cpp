@@ -13,7 +13,6 @@ RigidBody::RigidBody()
 	this->inertia = 0.0;
 	this->mass = 0.0;
 	this->worldPolygonValid = false;
-	this->inRestingContact = false;
 }
 
 /*virtual*/ RigidBody::~RigidBody()
@@ -154,13 +153,6 @@ const ConvexPolygon& RigidBody::GetWorldPolygon() const
 	if ((this->flags & PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY) != 0)
 	{
 		this->netForce += engine->accelerationDueToGravity * this->mass;
-	}
-
-	if (this->inRestingContact)
-	{
-		double frictionCoeficient = 10.0;
-		Vector2D frictionForce = this->mass * this->velocity * -1.0 * frictionCoeficient;
-		this->netForce += frictionForce;
 	}
 }
 
