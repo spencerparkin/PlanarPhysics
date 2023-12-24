@@ -35,7 +35,11 @@ bool App::Setup()
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 	this->engine.SetWorldBox(this->drawHelper.worldBox);
-	this->engine.SetCoefOfRestForAllCHs(0.2);
+	
+	this->engine.SetCoefOfRest<Ball, Ball>(0.2);
+	this->engine.SetCoefOfRest<Ball, Wall>(0.2);
+	this->engine.SetCoefOfRest<Ball, RigidBody>(0.2);
+	this->engine.SetCoefOfRest<Wall, RigidBody>(0.2);
 
 	this->MakeWalls();
 

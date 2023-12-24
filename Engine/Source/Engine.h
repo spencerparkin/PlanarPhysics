@@ -3,12 +3,12 @@
 #include "Common.h"
 #include "PlanarObject.h"
 #include "Math/GeometricAlgebra/Vector2D.h"
+#include "CollisionHandler.h"
 #include "BoxTree.h"
 
 namespace PlanarPhysics
 {
 	class Wall;
-	class CollisionHandler;
 
 	class PLANAR_PHYSICS_API Engine
 	{
@@ -30,8 +30,23 @@ namespace PlanarPhysics
 		void Tick();
 		void SetWorldBox(const BoundingBox& worldBox);
 		const BoundingBox& GetWorldBox() const;
-		void SetCoefOfRestForAllCHs(double coeficientOfRestitution);
 		void ConsolidateWalls();
+
+		template<typename Ta, typename Tb>
+		bool SetCoefOfRest(double coefficientOfRestitution)
+		{
+			CollisionHandler* collisionHandlerA = this->collisionHandlerMatrix[int(Ta::StaticType())][int(Tb::StaticType())];
+			if (!collisionHandlerA)
+				return false;
+
+			CollisionHandler* collisionHandlerB = this->collisionHandlerMatrix[int(Tb::StaticType())][int(Ta::StaticType())];
+			if (!collisionHandlerB)
+				return false;
+
+			collisionHandlerA->coefficientOfRestitution = coefficientOfRestitution;
+			collisionHandlerB->coefficientOfRestitution = coefficientOfRestitution;
+			return true;
+		}
 
 		Vector2D accelerationDueToGravity;
 

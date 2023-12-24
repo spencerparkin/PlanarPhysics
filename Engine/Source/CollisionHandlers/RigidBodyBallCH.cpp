@@ -69,7 +69,7 @@ RigidBodyBallCH::RigidBodyBallCH()
 				double termA = 1.0 / ball->Mass() - (rBall ^ contact.normal) * (rBall ^ contact.normal) / ball->Inertia();
 				double termB = 1.0 / body->mass - (rBody ^ contact.normal) * (rBody ^ contact.normal) / body->inertia;
 
-				double j = -(1.0 + this->coeficientOfRestitution) * relativeVelocity / (termA + termB);
+				double j = -(1.0 + this->coefficientOfRestitution) * relativeVelocity / (termA + termB);
 
 				Vector2D impulse = j * contact.normal;
 

@@ -4,7 +4,7 @@ using namespace PlanarPhysics;
 
 CollisionHandler::CollisionHandler()
 {
-	this->coeficientOfRestitution = 0.9;
+	this->coefficientOfRestitution = 0.9;
 }
 
 /*virtual*/ CollisionHandler::~CollisionHandler()
