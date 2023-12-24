@@ -35,6 +35,7 @@ bool App::Setup()
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 	this->engine.SetWorldBox(this->drawHelper.worldBox);
+	this->engine.SetCoefOfRestForAllCHs(0.2);
 
 	this->MakeWalls();
 
@@ -54,6 +55,7 @@ bool App::Shutdown()
 
 void App::MakeWalls()
 {
+#if 0
 	RenderWall* bottomWall = this->engine.AddPlanarObject<RenderWall>();
 	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
 	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
@@ -73,6 +75,20 @@ void App::MakeWalls()
 	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
 	wallA->lineSeg.vertexA = Vector2D(-5.0, 0.0);
 	wallA->lineSeg.vertexB = Vector2D(5.0, 0.0);
+#else
+
+	// TODO: This helps us reproduce a tunneling bug.
+	//       Also, rigid-bodies don't slide very well along slanted walls.
+
+	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
+	wallA->lineSeg.vertexA = Vector2D(-50.0, 0.0);
+	wallA->lineSeg.vertexB = Vector2D(0.0, -50.0);
+
+	RenderWall* wallB = this->engine.AddPlanarObject<RenderWall>();
+	wallB->lineSeg.vertexA = Vector2D(0.0, -50.0);
+	wallB->lineSeg.vertexB = Vector2D(50.0, 0.0);
+
+#endif
 
 	this->engine.ConsolidateWalls();
 }
@@ -144,10 +160,15 @@ bool App::HandleKeyboard()
 
 							std::vector<Vector2D> pointArray;
 
-							pointArray.push_back(Vector2D(-8.0, -5.0) + Random::Vector(0.5, 1.5));
-							pointArray.push_back(Vector2D(8.0, -5.0) + Random::Vector(0.5, 1.5));
-							pointArray.push_back(Vector2D(8.0, 5.0) + Random::Vector(0.5, 1.5));
-							pointArray.push_back(Vector2D(-8.0, 5.0) + Random::Vector(0.5, 1.5));
+							//pointArray.push_back(Vector2D(-8.0, -5.0) + Random::Vector(0.5, 1.5));
+							//pointArray.push_back(Vector2D(8.0, -5.0) + Random::Vector(0.5, 1.5));
+							//pointArray.push_back(Vector2D(8.0, 5.0) + Random::Vector(0.5, 1.5));
+							//pointArray.push_back(Vector2D(-8.0, 5.0) + Random::Vector(0.5, 1.5));
+
+							pointArray.push_back(Vector2D(-5.0, -5.0));
+							pointArray.push_back(Vector2D(5.0, -5.0));
+							pointArray.push_back(Vector2D(5.0, 5.0));
+							pointArray.push_back(Vector2D(-5.0, 5.0));
 
 							if (!body->MakeShape(pointArray, 1.0))
 							{
