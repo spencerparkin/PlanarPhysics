@@ -43,38 +43,43 @@ RigidBodyWallCH::RigidBodyWallCH()
 
 		if (edgeSegment.CalcIntersectionPoint(wall->lineSeg, contact.point))
 		{
-			bool containsVertexA = polygon.ContainsPoint(wall->lineSeg.vertexA);
-			bool containsVertexB = polygon.ContainsPoint(wall->lineSeg.vertexB);
-
-			if (containsVertexA || containsVertexB)
+			const Vector2D* closestVertex = nullptr;
+			double minSquareDistance = std::numeric_limits<double>::max();
+			for (const Vector2D& vertex : polygon.GetVertexArray())
 			{
-				contact.normal = ((vertexB - vertexA) * PScalar2D(1.0)).Normalized();
+				Vector2D distanceVector = vertex - contact.point;
+				double squareDistance = distanceVector | distanceVector;
+				if (squareDistance < minSquareDistance)
+				{
+					minSquareDistance = squareDistance;
+					closestVertex = &vertex;
+				}
+			}
 
-				if (containsVertexA)
-					contact.penetrationDepth = edgeSegment.DistanceTo(vertexA);
-				else
-					contact.penetrationDepth = edgeSegment.DistanceTo(vertexB);
+			assert(closestVertex != nullptr);
+
+			Vector2D distanceVectorA = wall->lineSeg.vertexA - contact.point;
+			Vector2D distanceVectorB = wall->lineSeg.vertexB - contact.point;
+
+			double squareDistanceA = distanceVectorA | distanceVectorA;
+			double squareDistanceB = distanceVectorB | distanceVectorB;
+
+			if (minSquareDistance < squareDistanceA && minSquareDistance < squareDistanceB)
+			{
+				contact.normal = wall->Normal();
+				contact.penetrationDepth = wall->lineSeg.DistanceTo(*closestVertex);
+				if ((contact.normal | (body->position - *closestVertex)) < 0.0)
+					contact.normal = -contact.normal;
 			}
 			else
 			{
-				contact.normal = wall->Normal();
+				if (squareDistanceA < squareDistanceB)
+					closestVertex = &wall->lineSeg.vertexA;
+				else
+					closestVertex = &wall->lineSeg.vertexB;
 
-				const Vector2D* chosenVertex = nullptr;
-				double minDistance = std::numeric_limits<double>::max();
-				for (const Vector2D& vertex : polygon.GetVertexArray())
-				{
-					double distance = wall->lineSeg.DistanceTo(vertex);
-					if (distance < minDistance)
-					{
-						minDistance = distance;
-						chosenVertex = &vertex;
-					}
-				}
-
-				if ((contact.normal | (body->position - *chosenVertex)) < 0.0)
-					contact.normal = -contact.normal;
-
-				contact.penetrationDepth = minDistance;
+				contact.normal = ((vertexB - vertexA) * PScalar2D(1.0)).Normalized();
+				contact.penetrationDepth = edgeSegment.DistanceTo(*closestVertex);
 			}
 
 			contactArray.push_back(contact);

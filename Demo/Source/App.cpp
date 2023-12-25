@@ -36,10 +36,10 @@ bool App::Setup()
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 	this->engine.SetWorldBox(this->drawHelper.worldBox);
 	
-	this->engine.SetCoefOfRest<Ball, Ball>(0.2);
-	this->engine.SetCoefOfRest<Ball, Wall>(0.2);
-	this->engine.SetCoefOfRest<Ball, RigidBody>(0.2);
-	this->engine.SetCoefOfRest<Wall, RigidBody>(0.2);
+	this->engine.SetCoefOfRest<Ball, Ball>(0.9);
+	this->engine.SetCoefOfRest<Ball, Wall>(0.9);
+	this->engine.SetCoefOfRest<Ball, RigidBody>(0.9);
+	this->engine.SetCoefOfRest<Wall, RigidBody>(0.9);
 
 	this->MakeWalls();
 
@@ -59,7 +59,7 @@ bool App::Shutdown()
 
 void App::MakeWalls()
 {
-#if 0
+#if 1
 	RenderWall* bottomWall = this->engine.AddPlanarObject<RenderWall>();
 	bottomWall->lineSeg.vertexA = Vector2D(-49.5, -49.5);
 	bottomWall->lineSeg.vertexB = Vector2D(49.5, -49.5);
@@ -163,15 +163,15 @@ bool App::HandleKeyboard()
 
 							std::vector<Vector2D> pointArray;
 
-							//pointArray.push_back(Vector2D(-8.0, -5.0) + Random::Vector(0.5, 1.5));
-							//pointArray.push_back(Vector2D(8.0, -5.0) + Random::Vector(0.5, 1.5));
-							//pointArray.push_back(Vector2D(8.0, 5.0) + Random::Vector(0.5, 1.5));
-							//pointArray.push_back(Vector2D(-8.0, 5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(-8.0, -5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(8.0, -5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(8.0, 5.0) + Random::Vector(0.5, 1.5));
+							pointArray.push_back(Vector2D(-8.0, 5.0) + Random::Vector(0.5, 1.5));
 
-							pointArray.push_back(Vector2D(-5.0, -5.0));
-							pointArray.push_back(Vector2D(5.0, -5.0));
-							pointArray.push_back(Vector2D(5.0, 5.0));
-							pointArray.push_back(Vector2D(-5.0, 5.0));
+							//pointArray.push_back(Vector2D(-5.0, -5.0));
+							//pointArray.push_back(Vector2D(5.0, -5.0));
+							//pointArray.push_back(Vector2D(5.0, 5.0));
+							//pointArray.push_back(Vector2D(-5.0, 5.0));
 
 							if (!body->MakeShape(pointArray, 1.0))
 							{

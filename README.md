@@ -10,4 +10,4 @@ The primary focus of this engine is the simulation of the motion of bodies throu
 2. Balls,
 3. Convex polygons.
 
-Walls are static.  They don't move, but you can bump into them.  Balls have position, but no orientation.  (I'm going to change this and given them angular velocity as well.)  And convex polygons are rigid bodies with position, orientation, linear velocity and angular velocity.
+Walls are static.  They don't move, but you can bump into them.  Balls have position, but no orientation.  (I'm going to change this and give them angular velocity as well.)  And convex polygons are rigid bodies with position, orientation, linear velocity and angular velocity.
