@@ -88,6 +88,9 @@
     <ClInclude Include="Source\CollisionHandlers\RigidBodyBallCH.h">
       <Filter>Source\CollisionHandlers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Math\Utilities\Transform.h">
+      <Filter>Source\Math\Utilities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Engine.cpp">
@@ -152,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="Source\CollisionHandlers\RigidBodyBallCH.cpp">
       <Filter>Source\CollisionHandlers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\Utilities\Transform.cpp">
+      <Filter>Source\Math\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

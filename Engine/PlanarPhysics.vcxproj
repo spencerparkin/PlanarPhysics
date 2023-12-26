@@ -37,6 +37,7 @@
     <ClInclude Include="Source\Math\Utilities\Line.h" />
     <ClInclude Include="Source\Math\Utilities\LineSegment.h" />
     <ClInclude Include="Source\Math\Utilities\Ray.h" />
+    <ClInclude Include="Source\Math\Utilities\Transform.h" />
     <ClInclude Include="Source\PlanarObject.h" />
     <ClInclude Include="Source\PlanarObjects\Ball.h" />
     <ClInclude Include="Source\PlanarObjects\RigidBody.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="Source\Math\Utilities\Line.cpp" />
     <ClCompile Include="Source\Math\Utilities\LineSegment.cpp" />
     <ClCompile Include="Source\Math\Utilities\Ray.cpp" />
+    <ClCompile Include="Source\Math\Utilities\Transform.cpp" />
     <ClCompile Include="Source\PlanarObject.cpp" />
     <ClCompile Include="Source\PlanarObjects\Ball.cpp" />
     <ClCompile Include="Source\PlanarObjects\RigidBody.cpp" />
