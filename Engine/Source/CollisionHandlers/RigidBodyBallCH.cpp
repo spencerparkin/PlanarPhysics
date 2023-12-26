@@ -13,7 +13,7 @@ RigidBodyBallCH::RigidBodyBallCH()
 {
 }
 
-/*virtual*/ void RigidBodyBallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
+/*virtual*/ bool RigidBodyBallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
 {
 	RigidBody* body = dynamic_cast<RigidBody*>(objectA);
 	Ball* ball = dynamic_cast<Ball*>(objectB);
@@ -24,7 +24,7 @@ RigidBodyBallCH::RigidBodyBallCH()
 		ball = dynamic_cast<Ball*>(objectA);
 
 		if (!body || !ball)
-			return;
+			return false;
 	}
 
 	body->UpdateWorldPolygonIfNeeded();
@@ -80,8 +80,10 @@ RigidBodyBallCH::RigidBodyBallCH()
 
 				body->angularVelocity -= impulsiveTorque;
 
-				return;
+				return true;
 			}
 		}
 	}
+
+	return false;
 }

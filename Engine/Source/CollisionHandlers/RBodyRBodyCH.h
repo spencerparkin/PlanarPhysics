@@ -11,7 +11,7 @@ namespace PlanarPhysics
 		RBodyRBodyCH();
 		virtual ~RBodyRBodyCH();
 
-		virtual void HandleCollision(PlanarObject* objectA, PlanarObject* objectB) override;
+		virtual bool HandleCollision(PlanarObject* objectA, PlanarObject* objectB) override;
 
 	private:
 		

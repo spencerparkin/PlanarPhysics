@@ -35,16 +35,11 @@ namespace PlanarPhysics
 		template<typename Ta, typename Tb>
 		bool SetCoefOfRest(double coefficientOfRestitution)
 		{
-			CollisionHandler* collisionHandlerA = this->collisionHandlerMatrix[int(Ta::StaticType())][int(Tb::StaticType())];
-			if (!collisionHandlerA)
+			CollisionHandler* collisionHandler = this->collisionHandlerMatrix[int(Ta::StaticType())][int(Tb::StaticType())];
+			if (!collisionHandler)
 				return false;
 
-			CollisionHandler* collisionHandlerB = this->collisionHandlerMatrix[int(Tb::StaticType())][int(Ta::StaticType())];
-			if (!collisionHandlerB)
-				return false;
-
-			collisionHandlerA->coefficientOfRestitution = coefficientOfRestitution;
-			collisionHandlerB->coefficientOfRestitution = coefficientOfRestitution;
+			collisionHandler->coefficientOfRestitution = coefficientOfRestitution;
 			return true;
 		}
 
@@ -55,6 +50,7 @@ namespace PlanarPhysics
 		Wall* MergeWalls(const Wall* wallA, const Wall* wallB);
 
 		CollisionHandler* collisionHandlerMatrix[(int)PlanarObject::Type::NUM_TYPES][(int)PlanarObject::Type::NUM_TYPES];
+		std::vector<CollisionHandler*>* collisionHandlerArray;
 		std::vector<PlanarObject*>* planarObjectArray;
 		BoxTree boxTree;
 		double currentTime;

@@ -12,7 +12,7 @@ RigidBodyWallCH::RigidBodyWallCH()
 {
 }
 
-/*virtual*/ void RigidBodyWallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
+/*virtual*/ bool RigidBodyWallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
 {
 	RigidBody* body = dynamic_cast<RigidBody*>(objectA);
 	const Wall* wall = dynamic_cast<Wall*>(objectB);
@@ -23,7 +23,7 @@ RigidBodyWallCH::RigidBodyWallCH()
 		wall = dynamic_cast<Wall*>(objectA);
 
 		if (!body || !wall)
-			return;
+			return false;
 	}
 
 	std::vector<PlanarObject::Contact> contactArray;
@@ -106,4 +106,6 @@ RigidBodyWallCH::RigidBodyWallCH()
 			body->angularVelocity += impulsiveTorque;
 		}
 	}
+
+	return contactArray.size() > 0;
 }

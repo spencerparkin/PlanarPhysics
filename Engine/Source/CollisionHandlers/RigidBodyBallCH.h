@@ -10,6 +10,6 @@ namespace PlanarPhysics
 		RigidBodyBallCH();
 		virtual ~RigidBodyBallCH();
 
-		virtual void HandleCollision(PlanarObject* objectA, PlanarObject* objectB) override;
+		virtual bool HandleCollision(PlanarObject* objectA, PlanarObject* objectB) override;
 	};
 }

@@ -11,13 +11,13 @@ BallBallCH::BallBallCH()
 {
 }
 
-/*virtual*/ void BallBallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
+/*virtual*/ bool BallBallCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
 {
 	Ball* ballA = dynamic_cast<Ball*>(objectA);
 	Ball* ballB = dynamic_cast<Ball*>(objectB);
 
 	if (!ballA || !ballB)
-		return;
+		return false;
 
 	Vector2D contactNormal = ballA->position - ballB->position;
 	double distanceBetweenCenters = contactNormal.Magnitude();
@@ -38,5 +38,9 @@ BallBallCH::BallBallCH()
 
 		ballA->velocity += contactNormal * impulseA;
 		ballB->velocity -= contactNormal * impulseB;
+
+		return true;
 	}
+
+	return false;
 }

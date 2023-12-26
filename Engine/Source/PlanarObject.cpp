@@ -46,3 +46,7 @@ void PlanarObject::SetFlags(uint32_t flags)
 {
 	return false;
 }
+
+/*virtual*/ void PlanarObject::CollisionOccurredWith(PlanarObject* planarObject)
+{
+}

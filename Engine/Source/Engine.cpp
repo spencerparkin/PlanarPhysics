@@ -17,30 +17,42 @@ Engine::Engine()
 	this->currentTime = 0.0;
 	this->maxDeltaTime = 0.00025;
 	this->planarObjectArray = new std::vector<PlanarObject*>();
+	this->collisionHandlerArray = new std::vector<CollisionHandler*>();
 	
 	const int numTypes = (int)PlanarObject::Type::NUM_TYPES;
 	::memset(this->collisionHandlerMatrix, 0, sizeof(CollisionHandler*[numTypes][numTypes]));
 
-	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Ball::StaticType()] = new BallBallCH();
-	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Wall::StaticType()] = new BallWallCH();
-	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)Ball::StaticType()] = new BallWallCH();
-	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)Wall::StaticType()] = new RigidBodyWallCH();
-	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)RigidBody::StaticType()] = new RigidBodyWallCH();
-	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)Ball::StaticType()] = new RigidBodyBallCH();
-	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)RigidBody::StaticType()] = new RigidBodyBallCH();
-	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)RigidBody::StaticType()] = new RBodyRBodyCH();
+	auto ballBallCH = new BallBallCH();
+	auto ballWallCH = new BallWallCH();
+	auto rigidBodyBallCH = new RigidBodyBallCH();
+	auto rigidBodyWallCH = new RigidBodyWallCH();
+	auto rbodyRbodyCH = new RBodyRBodyCH();
+
+	this->collisionHandlerArray->push_back(ballBallCH);
+	this->collisionHandlerArray->push_back(ballWallCH);
+	this->collisionHandlerArray->push_back(rigidBodyBallCH);
+	this->collisionHandlerArray->push_back(rigidBodyWallCH);
+	this->collisionHandlerArray->push_back(rbodyRbodyCH);
+
+	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Ball::StaticType()] = ballBallCH;
+	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)Wall::StaticType()] = ballWallCH;
+	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)Ball::StaticType()] = ballWallCH;
+	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)Wall::StaticType()] = rigidBodyWallCH;
+	this->collisionHandlerMatrix[(int)Wall::StaticType()][(int)RigidBody::StaticType()] = rigidBodyWallCH;
+	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)Ball::StaticType()] = rigidBodyBallCH;
+	this->collisionHandlerMatrix[(int)Ball::StaticType()][(int)RigidBody::StaticType()] = rigidBodyBallCH;
+	this->collisionHandlerMatrix[(int)RigidBody::StaticType()][(int)RigidBody::StaticType()] = rbodyRbodyCH;
 }
 
 /*virtual*/ Engine::~Engine()
 {
 	this->Clear();
 
-	delete this->planarObjectArray;
+	for (CollisionHandler* collisionHandler : *this->collisionHandlerArray)
+		delete collisionHandler;
 
-	const int numTypes = (int)PlanarObject::Type::NUM_TYPES;
-	for (int i = 0; i < numTypes; i++)
-		for (int j = 0; j < numTypes; j++)
-			delete this->collisionHandlerMatrix[i][j];
+	delete this->planarObjectArray;
+	delete this->collisionHandlerArray;
 }
 
 void Engine::SetWorldBox(const BoundingBox& worldBox)
@@ -125,8 +137,11 @@ double Engine::Tick()
 						pairSet.insert(key);
 
 						CollisionHandler* handler = this->collisionHandlerMatrix[(int)objectA->GetType()][(int)objectB->GetType()];
-						if (handler)
-							handler->HandleCollision(objectA, objectB);
+						if (handler && handler->HandleCollision(objectA, objectB))
+						{
+							objectA->CollisionOccurredWith(objectB);
+							objectB->CollisionOccurredWith(objectA);
+						}
 					}
 				}
 			});

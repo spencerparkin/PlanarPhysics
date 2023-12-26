@@ -28,3 +28,4 @@
 #include <string>
 #include <functional>
 #include <assert.h>
+#include <memory>

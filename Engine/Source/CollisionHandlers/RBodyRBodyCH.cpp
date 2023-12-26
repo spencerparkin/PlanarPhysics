@@ -26,13 +26,13 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 	this->contactArray.push_back(contact);
 }
 
-/*virtual*/ void RBodyRBodyCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
+/*virtual*/ bool RBodyRBodyCH::HandleCollision(PlanarObject* objectA, PlanarObject* objectB)
 {
 	auto bodyA = dynamic_cast<RigidBody*>(objectA);
 	auto bodyB = dynamic_cast<RigidBody*>(objectB);
 
 	if (!bodyA || !bodyB)
-		return;
+		return false;
 
 	this->contactArray.clear();
 
@@ -123,7 +123,7 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 	{
 		double penetrationDistance = 0.0;
 		if (bodyB->AllVerticesOnOrInFrontOfLine(edgeLineA, penetrationDistance))
-			return;
+			return contactArray.size() > 0;
 
 		separationCaseArray.push_back(SeparationCase{ ::abs(penetrationDistance), -edgeLineA.normal });
 	}
@@ -132,7 +132,7 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 	{
 		double penetrationDistance = 0.0;
 		if (bodyA->AllVerticesOnOrInFrontOfLine(edgeLineB, penetrationDistance))
-			return;
+			return contactArray.size() > 0;
 
 		separationCaseArray.push_back(SeparationCase{ ::abs(penetrationDistance), edgeLineB.normal });
 	}
@@ -157,4 +157,6 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 		bodyA->worldPolygonValid = false;
 		bodyB->worldPolygonValid = false;
 	}
+
+	return contactArray.size() > 0;
 }
