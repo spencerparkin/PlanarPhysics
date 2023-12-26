@@ -45,6 +45,17 @@ namespace PlanarPhysics
 
 		Vector2D accelerationDueToGravity;
 
+		struct CollisionEvent
+		{
+			PlanarObject* objectA;
+			PlanarObject* objectB;
+		};
+
+		void EnqueueCollisionEvent(const CollisionEvent& event);
+		bool DequeueCollisionEvent(CollisionEvent& event);
+		int GetCollisionEventQueueSize() const;
+		void ClearCollisionEventQueue();
+
 	private:
 
 		Wall* MergeWalls(const Wall* wallA, const Wall* wallB);
@@ -52,6 +63,7 @@ namespace PlanarPhysics
 		CollisionHandler* collisionHandlerMatrix[(int)PlanarObject::Type::NUM_TYPES][(int)PlanarObject::Type::NUM_TYPES];
 		std::vector<CollisionHandler*>* collisionHandlerArray;
 		std::vector<PlanarObject*>* planarObjectArray;
+		std::list<CollisionEvent>* collisionEventQueue;
 		BoxTree boxTree;
 		double currentTime;
 		double maxDeltaTime;

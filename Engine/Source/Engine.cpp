@@ -18,6 +18,7 @@ Engine::Engine()
 	this->maxDeltaTime = 0.00025;
 	this->planarObjectArray = new std::vector<PlanarObject*>();
 	this->collisionHandlerArray = new std::vector<CollisionHandler*>();
+	this->collisionEventQueue = new std::list<CollisionEvent>();
 	
 	const int numTypes = (int)PlanarObject::Type::NUM_TYPES;
 	::memset(this->collisionHandlerMatrix, 0, sizeof(CollisionHandler*[numTypes][numTypes]));
@@ -53,6 +54,7 @@ Engine::Engine()
 
 	delete this->planarObjectArray;
 	delete this->collisionHandlerArray;
+	delete this->collisionEventQueue;
 }
 
 void Engine::SetWorldBox(const BoundingBox& worldBox)
@@ -139,8 +141,17 @@ double Engine::Tick()
 						CollisionHandler* handler = this->collisionHandlerMatrix[(int)objectA->GetType()][(int)objectB->GetType()];
 						if (handler && handler->HandleCollision(objectA, objectB))
 						{
-							objectA->CollisionOccurredWith(objectB);
-							objectB->CollisionOccurredWith(objectA);
+							if ((objectA->GetFlags() & PLNR_OBJ_FLAG_CALL_COLLISION_FUNC) != 0)
+								objectA->CollisionOccurredWith(objectB);
+
+							if ((objectB->GetFlags() & PLNR_OBJ_FLAG_CALL_COLLISION_FUNC) != 0)
+								objectB->CollisionOccurredWith(objectA);
+							
+							if ((objectA->GetFlags() & PLNR_OBJ_FLAG_GEN_COLLISION_EVENTS) != 0 &&
+								(objectB->GetFlags() & PLNR_OBJ_FLAG_GEN_COLLISION_EVENTS) != 0)
+							{
+								this->EnqueueCollisionEvent(CollisionEvent{ objectA, objectB });
+							}
 						}
 					}
 				}
@@ -154,6 +165,32 @@ double Engine::Tick()
 	}
 
 	return elapsedTime;
+}
+
+int Engine::GetCollisionEventQueueSize() const
+{
+	return (int)this->collisionEventQueue->size();
+}
+
+void Engine::ClearCollisionEventQueue()
+{
+	this->collisionEventQueue->clear();
+}
+
+void Engine::EnqueueCollisionEvent(const CollisionEvent& event)
+{
+	this->collisionEventQueue->push_back(event);
+}
+
+bool Engine::DequeueCollisionEvent(CollisionEvent& event)
+{
+	if (this->collisionEventQueue->size() == 0)
+		return false;
+
+	std::list<CollisionEvent>::iterator iter = this->collisionEventQueue->begin();
+	event = *iter;
+	this->collisionEventQueue->erase(iter);
+	return true;
 }
 
 void Engine::ConsolidateWalls()
