@@ -69,12 +69,12 @@ void Engine::Clear()
 	this->planarObjectArray->clear();
 }
 
-void Engine::Tick()
+double Engine::Tick()
 {
 	if (currentTime == 0.0)
 	{
 		currentTime = double(::clock()) / double(CLOCKS_PER_SEC);
-		return;
+		return 0.0;
 	}
 	
 	double presentTime = double(::clock()) / double(CLOCKS_PER_SEC);
@@ -82,7 +82,7 @@ void Engine::Tick()
 	if (elapsedTime > 0.5)
 	{
 		currentTime = presentTime;
-		return;		// This is to prevent debugger breaks from producing very large time-steps.
+		return 0.0;		// This is to prevent debugger breaks from producing very large time-steps.
 	}
 
 	while (currentTime < presentTime)
@@ -137,6 +137,8 @@ void Engine::Tick()
 
 		currentTime += deltaTime;
 	}
+
+	return elapsedTime;
 }
 
 void Engine::ConsolidateWalls()

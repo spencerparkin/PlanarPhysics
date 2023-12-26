@@ -36,6 +36,7 @@
     <ClInclude Include="Source\Math\Utilities\ConvexPolygon.h" />
     <ClInclude Include="Source\Math\Utilities\Line.h" />
     <ClInclude Include="Source\Math\Utilities\LineSegment.h" />
+    <ClInclude Include="Source\Math\Utilities\Random.h" />
     <ClInclude Include="Source\Math\Utilities\Ray.h" />
     <ClInclude Include="Source\Math\Utilities\Transform.h" />
     <ClInclude Include="Source\PlanarObject.h" />
@@ -60,6 +61,7 @@
     <ClCompile Include="Source\Math\Utilities\ConvexPolygon.cpp" />
     <ClCompile Include="Source\Math\Utilities\Line.cpp" />
     <ClCompile Include="Source\Math\Utilities\LineSegment.cpp" />
+    <ClCompile Include="Source\Math\Utilities\Random.cpp" />
     <ClCompile Include="Source\Math\Utilities\Ray.cpp" />
     <ClCompile Include="Source\Math\Utilities\Transform.cpp" />
     <ClCompile Include="Source\PlanarObject.cpp" />

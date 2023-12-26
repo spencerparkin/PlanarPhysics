@@ -27,7 +27,7 @@ namespace PlanarPhysics
 		const std::vector<PlanarObject*>& GetPlanarObjectArray() const;
 
 		void Clear();
-		void Tick();
+		double Tick();
 		void SetWorldBox(const BoundingBox& worldBox);
 		const BoundingBox& GetWorldBox() const;
 		void ConsolidateWalls();

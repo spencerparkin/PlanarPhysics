@@ -40,6 +40,8 @@ namespace PlanarPhysics
 		bool OverlapsWith(const BoundingBox& box) const;
 		bool ContainsBox(const BoundingBox& box) const;
 		void IntegrateOverArea(int resolution, std::function<void(const BoundingBox& subBox)> integralFunc);
+		BoundingBox Translated(const Vector2D& translation) const;
+		Vector2D RandomPoint() const;
 
 		Vector2D min, max;
 	};

@@ -1,4 +1,5 @@
 #include "BoundingBox.h"
+#include "Random.h"
 
 using namespace PlanarPhysics;
 
@@ -231,4 +232,17 @@ void BoundingBox::IntegrateOverArea(int resolution, std::function<void(const Bou
 			integralFunc(subBox);
 		}
 	}
+}
+
+BoundingBox BoundingBox::Translated(const Vector2D& translation) const
+{
+	return BoundingBox(this->min + translation, this->max + translation);
+}
+
+Vector2D BoundingBox::RandomPoint() const
+{
+	return Vector2D(
+		Random::Number(this->min.x, this->min.y),
+		Random::Number(this->min.y, this->max.y)
+	);
 }
