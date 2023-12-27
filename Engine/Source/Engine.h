@@ -49,6 +49,22 @@ namespace PlanarPhysics
 		{
 			PlanarObject* objectA;
 			PlanarObject* objectB;
+
+			template<typename Ta, typename Tb>
+			bool Cast(Ta*& givenA, Tb*& givenB)
+			{
+				givenA = dynamic_cast<Ta*>(this->objectA);
+				givenB = dynamic_cast<Tb*>(this->objectB);
+				if (givenA && givenB)
+					return true;
+
+				givenA = dynamic_cast<Ta*>(this->objectB);
+				givenB = dynamic_cast<Tb*>(this->objectA);
+				if (givenA && givenB)
+					return true;
+
+				return false;
+			}
 		};
 
 		void EnqueueCollisionEvent(const CollisionEvent& event);

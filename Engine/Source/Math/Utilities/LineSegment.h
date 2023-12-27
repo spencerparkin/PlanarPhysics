@@ -23,6 +23,7 @@ namespace PlanarPhysics
 		bool SameGeometryAs(const LineSegment& lineSegment, double tolerance = PLNR_PHY_EPSILON) const;
 		bool Merge(const LineSegment& lineSegA, const LineSegment& lineSegB, double tolerance = PLNR_PHY_EPSILON);
 		bool ContainsPoint(const Vector2D& point, double tolerance = PLNR_PHY_EPSILON) const;
+		Vector2D MidPoint() const;
 
 		Vector2D& operator[](int i);
 		const Vector2D& operator[](int i) const;

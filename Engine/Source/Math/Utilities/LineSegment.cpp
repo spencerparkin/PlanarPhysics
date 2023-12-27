@@ -153,3 +153,8 @@ bool LineSegment::Merge(const LineSegment& lineSegA, const LineSegment& lineSegB
 
 	return this->ContainsPoint(point, tolerance);
 }
+
+Vector2D LineSegment::MidPoint() const
+{
+	return (this->vertexA + this->vertexB) / 2.0;
+}

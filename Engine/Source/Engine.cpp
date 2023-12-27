@@ -81,6 +81,7 @@ void Engine::Clear()
 		object->DeleteSelf();
 
 	this->planarObjectArray->clear();
+	this->collisionEventQueue->clear();
 }
 
 double Engine::Tick()
