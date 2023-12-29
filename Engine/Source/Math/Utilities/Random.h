@@ -9,5 +9,6 @@ namespace PlanarPhysics
 	public:
 		static double Number(double min, double max);
 		static int Integer(int min, int max);
+		static void ShuffleArray(std::vector<int>& intArray);
 	};
 }
