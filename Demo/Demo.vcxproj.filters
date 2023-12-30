@@ -25,14 +25,14 @@
     <ClInclude Include="Source\RenderObjects\RenderBall.h">
       <Filter>Source\RenderObjects</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Random.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\RenderObjects\RenderRigidBody.h">
       <Filter>Source\RenderObjects</Filter>
     </ClInclude>
     <ClInclude Include="Source\RenderObjects\RenderWall.h">
       <Filter>Source\RenderObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FramerateTracker.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -51,14 +51,14 @@
     <ClCompile Include="Source\RenderObjects\RenderBall.cpp">
       <Filter>Source\RenderObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Random.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\RenderObjects\RenderRigidBody.cpp">
       <Filter>Source\RenderObjects</Filter>
     </ClCompile>
     <ClCompile Include="Source\RenderObjects\RenderWall.cpp">
       <Filter>Source\RenderObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FramerateTracker.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,9 +1,10 @@
 #include "App.h"
-#include "Random.h"
+#include "Math/Utilities/Random.h"
 #include "RenderObject.h"
 #include "RenderObjects/RenderBall.h"
 #include "RenderObjects/RenderRigidBody.h"
 #include "RenderObjects/RenderWall.h"
+#include "FramerateTracker.h"
 
 using namespace PlanarPhysics;
 
@@ -76,12 +77,7 @@ void App::MakeWalls()
 	rightWall->lineSeg.vertexA = Vector2D(49.5, -49.5);
 	rightWall->lineSeg.vertexB = Vector2D(49.5, 49.5);
 
-	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
-	wallA->lineSeg.vertexA = Vector2D(-5.0, 0.0);
-	wallA->lineSeg.vertexB = Vector2D(5.0, 0.0);
 #else
-
-	// TODO: This helps us reproduce a tunneling bug.
 
 	RenderWall* wallA = this->engine.AddPlanarObject<RenderWall>();
 	wallA->lineSeg.vertexA = Vector2D(-50.0, 0.0);
@@ -98,8 +94,12 @@ void App::MakeWalls()
 
 int App::Run()
 {
+	FramerateTracker framerateTracker;
+
 	while (this->HandleKeyboard())
 	{
+		framerateTracker.Track(stdout);
+
 		this->engine.Tick();
 
 		this->drawHelper.BeginRender();

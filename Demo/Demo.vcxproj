@@ -161,8 +161,8 @@
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\DrawHelper.h" />
+    <ClInclude Include="Source\FramerateTracker.h" />
     <ClInclude Include="Source\Main.h" />
-    <ClInclude Include="Source\Random.h" />
     <ClInclude Include="Source\RenderObject.h" />
     <ClInclude Include="Source\RenderObjects\RenderBall.h" />
     <ClInclude Include="Source\RenderObjects\RenderRigidBody.h" />
@@ -171,8 +171,8 @@
   <ItemGroup>
     <ClCompile Include="Source\App.cpp" />
     <ClCompile Include="Source\DrawHelper.cpp" />
+    <ClCompile Include="Source\FramerateTracker.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-    <ClCompile Include="Source\Random.cpp" />
     <ClCompile Include="Source\RenderObject.cpp" />
     <ClCompile Include="Source\RenderObjects\RenderBall.cpp" />
     <ClCompile Include="Source\RenderObjects\RenderRigidBody.cpp" />
