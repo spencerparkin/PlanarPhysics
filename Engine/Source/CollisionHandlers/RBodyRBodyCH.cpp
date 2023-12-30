@@ -82,7 +82,8 @@ void RBodyRBodyCH::AddUniqueContact(const PlanarObject::Contact& contact)
 			double termA = 1.0 / bodyA->mass - (rA ^ contact.normal) * (rA ^ contact.normal) / bodyA->inertia;
 			double termB = 1.0 / bodyB->mass - (rB ^ contact.normal) * (rB ^ contact.normal) / bodyB->inertia;
 
-			double j = -(1.0 + this->coefficientOfRestitution) * relativeVelocity / (termA + termB);
+			double coefficientOfRestitution = bodyA->GetBounceFactor() * bodyB->GetBounceFactor();
+			double j = -(1.0 + coefficientOfRestitution) * relativeVelocity / (termA + termB);
 
 			Vector2D impulse = j * contact.normal;
 

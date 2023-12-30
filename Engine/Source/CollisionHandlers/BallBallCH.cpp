@@ -33,8 +33,10 @@ BallBallCH::BallBallCH()
 		double totalMass = ballA->Mass() + ballB->Mass();
 		double relativeVelocity = (ballB->velocity - ballA->velocity) | contactNormal;
 
-		double impulseA = (1.0 + this->coefficientOfRestitution) * ballB->Mass() * relativeVelocity / totalMass;
-		double impulseB = (1.0 + this->coefficientOfRestitution) * ballA->Mass() * relativeVelocity / totalMass;
+		double coefficientOfRestitution = ballA->GetBounceFactor() * ballB->GetBounceFactor();
+
+		double impulseA = (1.0 + coefficientOfRestitution) * ballB->Mass() * relativeVelocity / totalMass;
+		double impulseB = (1.0 + coefficientOfRestitution) * ballA->Mass() * relativeVelocity / totalMass;
 
 		ballA->velocity += contactNormal * impulseA;
 		ballB->velocity -= contactNormal * impulseB;

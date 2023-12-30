@@ -84,7 +84,7 @@ void Engine::Clear()
 	this->collisionEventQueue->clear();
 }
 
-double Engine::Tick()
+/*virtual*/ double Engine::Tick()
 {
 	if (currentTime == 0.0)
 	{
@@ -143,10 +143,10 @@ double Engine::Tick()
 						if (handler && handler->HandleCollision(objectA, objectB))
 						{
 							if ((objectA->GetFlags() & PLNR_OBJ_FLAG_CALL_COLLISION_FUNC) != 0)
-								objectA->CollisionOccurredWith(objectB);
+								objectA->CollisionOccurredWith(objectB, this);
 
 							if ((objectB->GetFlags() & PLNR_OBJ_FLAG_CALL_COLLISION_FUNC) != 0)
-								objectB->CollisionOccurredWith(objectA);
+								objectB->CollisionOccurredWith(objectA, this);
 							
 							if ((objectA->GetFlags() & PLNR_OBJ_FLAG_GEN_COLLISION_EVENTS) != 0 &&
 								(objectB->GetFlags() & PLNR_OBJ_FLAG_GEN_COLLISION_EVENTS) != 0)

@@ -32,10 +32,13 @@ namespace PlanarPhysics
 
 		virtual Type GetType() const = 0;
 		virtual PlanarObject* CreateNew() const = 0;
-		virtual void CollisionOccurredWith(PlanarObject* planarObject);
+		virtual void CollisionOccurredWith(PlanarObject* planarObject, Engine* engine);
 
 		uint32_t GetFlags() const;
 		void SetFlags(uint32_t flags);
+
+		double GetBounceFactor() const;
+		void SetBounceFactor(double bounceFactor);
 
 		struct Contact
 		{
@@ -53,5 +56,6 @@ namespace PlanarPhysics
 		virtual bool IsStatic() const;
 
 		uint32_t flags;
+		double bounceFactor;
 	};
 }

@@ -27,21 +27,10 @@ namespace PlanarPhysics
 		const std::vector<PlanarObject*>& GetPlanarObjectArray() const;
 
 		void Clear();
-		double Tick();
+		virtual double Tick();
 		void SetWorldBox(const BoundingBox& worldBox);
 		const BoundingBox& GetWorldBox() const;
 		void ConsolidateWalls();
-
-		template<typename Ta, typename Tb>
-		bool SetCoefOfRest(double coefficientOfRestitution)
-		{
-			CollisionHandler* collisionHandler = this->collisionHandlerMatrix[int(Ta::StaticType())][int(Tb::StaticType())];
-			if (!collisionHandler)
-				return false;
-
-			collisionHandler->coefficientOfRestitution = coefficientOfRestitution;
-			return true;
-		}
 
 		Vector2D accelerationDueToGravity;
 

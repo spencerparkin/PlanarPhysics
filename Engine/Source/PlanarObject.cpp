@@ -5,6 +5,7 @@ using namespace PlanarPhysics;
 PlanarObject::PlanarObject()
 {
 	this->flags = 0;
+	this->bounceFactor = 1.0;
 }
 
 /*virtual*/ PlanarObject::~PlanarObject()
@@ -19,6 +20,16 @@ uint32_t PlanarObject::GetFlags() const
 void PlanarObject::SetFlags(uint32_t flags)
 {
 	this->flags = flags;
+}
+
+double PlanarObject::GetBounceFactor() const
+{
+	return this->bounceFactor;
+}
+
+void PlanarObject::SetBounceFactor(double bounceFactor)
+{
+	this->bounceFactor = bounceFactor;
 }
 
 /*virtual*/ void PlanarObject::AccumulateForces(const Engine* engine)
@@ -47,6 +58,6 @@ void PlanarObject::SetFlags(uint32_t flags)
 	return false;
 }
 
-/*virtual*/ void PlanarObject::CollisionOccurredWith(PlanarObject* planarObject)
+/*virtual*/ void PlanarObject::CollisionOccurredWith(PlanarObject* planarObject, Engine* engine)
 {
 }
