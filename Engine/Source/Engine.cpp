@@ -15,7 +15,7 @@ Engine::Engine()
 {
 	this->accelerationDueToGravity = Vector2D(0.0, -9.8);
 	this->currentTime = 0.0;
-	this->maxDeltaTime = 0.00025;
+	this->maxDeltaTime = 0.0025;
 	this->planarObjectArray = new std::vector<PlanarObject*>();
 	this->collisionHandlerArray = new std::vector<CollisionHandler*>();
 	this->collisionEventQueue = new std::list<CollisionEvent>();
