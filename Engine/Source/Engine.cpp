@@ -86,25 +86,25 @@ void Engine::Clear()
 
 /*virtual*/ double Engine::Tick()
 {
-	if (currentTime == 0.0)
+	if (this->currentTime == 0.0)
 	{
-		currentTime = double(::clock()) / double(CLOCKS_PER_SEC);
+        this->currentTime = double(::clock()) / double(CLOCKS_PER_SEC);
 		return 0.0;
 	}
 	
 	double presentTime = double(::clock()) / double(CLOCKS_PER_SEC);
-	double elapsedTime = presentTime - currentTime;
+	double elapsedTime = presentTime - this->currentTime;
 	if (elapsedTime > 0.5)
 	{
-		currentTime = presentTime;
+        this->currentTime = presentTime;
 		return 0.0;		// This is to prevent debugger breaks from producing very large time-steps.
 	}
 
-	while (currentTime < presentTime)
+	while (this->currentTime < presentTime)
 	{
 		double deltaTime = this->maxDeltaTime;
-		if (currentTime + deltaTime > presentTime)
-			deltaTime = presentTime - currentTime;
+		if (this->currentTime + deltaTime > presentTime)
+			deltaTime = presentTime - this->currentTime;
 
 		for (PlanarObject* object : *this->planarObjectArray)
 			object->AdvanceBegin();
@@ -162,7 +162,7 @@ void Engine::Clear()
 		for (PlanarObject* object : *this->planarObjectArray)
 			object->AdvanceEnd();
 
-		currentTime += deltaTime;
+        this->currentTime += deltaTime;
 	}
 
 	return elapsedTime;
