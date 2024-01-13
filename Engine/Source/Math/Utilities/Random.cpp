@@ -19,23 +19,6 @@ using namespace PlanarPhysics;
 	return PLNR_PHY_CLAMP(result, min, max);
 }
 
-/*static*/ void Random::ShuffleArray(std::vector<int>& intArray)
-{
-	std::vector<int> shuffledArray;
-
-	while (intArray.size() > 0)
-	{
-		int i = Random::Integer(0, int(intArray.size()) - 1);
-		int j = intArray[i];
-		intArray[i] = intArray[intArray.size() - 1];
-		intArray.pop_back();
-		shuffledArray.push_back(j);
-	}
-
-	for (int i : shuffledArray)
-		intArray.push_back(i);
-}
-
 /*static*/ Vector2D Random::Vector(const Vector2D& minVector, const Vector2D& maxVector)
 {
 	double lerp = double(rand()) / double(RAND_MAX);
