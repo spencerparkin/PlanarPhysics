@@ -1,5 +1,5 @@
 #include "App.h"
-#include "Math/Utilities/Random.h"
+#include "PlanarPhysics/Math/Utilities/Random.h"
 #include "RenderObject.h"
 #include "RenderObjects/RenderBall.h"
 #include "RenderObjects/RenderRigidBody.h"
@@ -20,27 +20,25 @@ bool App::Setup()
 {
 	Random::Seed(0);
 
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (!SDL_Init(SDL_INIT_VIDEO))
 	{
 		fprintf(stderr, "Error: %s", SDL_GetError());
 		return false;
 	}
 
-	if (SDL_CreateWindowAndRenderer(1000, 800, SDL_WINDOW_RESIZABLE, &this->drawHelper.window, &this->drawHelper.renderer) < 0)
+	if (!SDL_CreateWindowAndRenderer("Planar Physics Engine Demo", 1000, 800, SDL_WINDOW_RESIZABLE, &this->drawHelper.window, &this->drawHelper.renderer))
 	{
 		fprintf(stderr, "Error: %s", SDL_GetError());
 		return false;
 	}
-
-	SDL_SetWindowTitle(drawHelper.window, "Planar Physics Engine Demo");
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 	this->engine.SetWorldBox(this->drawHelper.worldBox);
 	
-	this->engine.SetCoefOfRest<Ball, Ball>(0.9);
-	this->engine.SetCoefOfRest<Ball, Wall>(0.9);
-	this->engine.SetCoefOfRest<Ball, RigidBody>(0.9);
-	this->engine.SetCoefOfRest<Wall, RigidBody>(0.9);
+	//this->engine.SetCoefOfRest<Ball, Ball>(0.9);
+	//this->engine.SetCoefOfRest<Ball, Wall>(0.9);
+	//this->engine.SetCoefOfRest<Ball, RigidBody>(0.9);
+	//this->engine.SetCoefOfRest<Wall, RigidBody>(0.9);
 
 	this->MakeWalls();
 
@@ -125,16 +123,16 @@ bool App::HandleKeyboard()
 	{
 		switch (event.type)
 		{
-			case SDL_QUIT:
+			case SDL_EVENT_QUIT:
 			{
 				return false;
 			}
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
+			case SDL_EVENT_KEY_DOWN:
+			case SDL_EVENT_KEY_UP:
 			{
-				if (event.type == SDL_KEYUP)
+				if (event.type == SDL_EVENT_KEY_UP)
 				{
-					switch (event.key.keysym.scancode)
+					switch (event.key.scancode)
 					{
 						case SDL_SCANCODE_B:
 						{

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Math/Utilities/BoundingBox.h"
-#include "Math/GeometricAlgebra/Vector2D.h"
-#include "SDL.h"
+#include "PlanarPhysics/Math/Utilities/BoundingBox.h"
+#include "PlanarPhysics/Math/GeometricAlgebra/Vector2D.h"
+#include "SDL3/SDL.h"
 
 class DrawHelper
 {

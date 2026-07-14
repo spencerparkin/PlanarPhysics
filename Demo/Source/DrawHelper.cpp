@@ -43,7 +43,7 @@ void DrawHelper::DrawLine(const Vector2D& pointA, const Vector2D& pointB, int r,
 	Vector2D screenPointB = this->WorldToScreen(pointB);
 
 	SDL_SetRenderDrawColor(this->renderer, r, g, b, 0);
-	SDL_RenderDrawLineF(this->renderer, (float)screenPointA.x, (float)screenPointA.y, (float)screenPointB.x, (float)screenPointB.y);
+	SDL_RenderLine(this->renderer, (float)screenPointA.x, (float)screenPointA.y, (float)screenPointB.x, (float)screenPointB.y);
 }
 
 void DrawHelper::DrawCircle(const Vector2D& center, double radius, int r, int g, int b, int segments /*= 12*/)
@@ -62,7 +62,7 @@ void DrawHelper::DrawCircle(const Vector2D& center, double radius, int r, int g,
 	}
 
 	SDL_SetRenderDrawColor(this->renderer, r, g, b, 0);
-	SDL_RenderDrawLinesF(this->renderer, pointArray, pointCount);
+	SDL_RenderLines(this->renderer, pointArray, pointCount);
 	delete[] pointArray;
 }
 

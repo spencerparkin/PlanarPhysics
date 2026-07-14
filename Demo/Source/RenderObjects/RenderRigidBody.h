@@ -1,6 +1,6 @@
 #pragma once
 
-#include "PlanarObjects/RigidBody.h"
+#include "PlanarPhysics/PlanarObjects/RigidBody.h"
 #include "RenderObject.h"
 
 class RenderRigidBody : public PlanarPhysics::RigidBody, public RenderObject

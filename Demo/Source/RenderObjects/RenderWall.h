@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderObject.h"
-#include "PlanarObjects/Wall.h"
+#include "PlanarPhysics/PlanarObjects/Wall.h"
 
 class RenderWall : public PlanarPhysics::Wall, public RenderObject
 {
