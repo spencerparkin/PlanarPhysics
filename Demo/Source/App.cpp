@@ -34,11 +34,6 @@ bool App::Setup()
 
 	this->engine.accelerationDueToGravity = Vector2D(0.0, -98.0);
 	this->engine.SetWorldBox(this->drawHelper.worldBox);
-	
-	//this->engine.SetCoefOfRest<Ball, Ball>(0.9);
-	//this->engine.SetCoefOfRest<Ball, Wall>(0.9);
-	//this->engine.SetCoefOfRest<Ball, RigidBody>(0.9);
-	//this->engine.SetCoefOfRest<Wall, RigidBody>(0.9);
 
 	this->MakeWalls();
 
@@ -144,6 +139,7 @@ bool App::HandleKeyboard()
 							ball->r = Random::Integer(0, 255);
 							ball->g = Random::Integer(0, 255);
 							ball->b = Random::Integer(0, 255);
+							ball->SetBounceFactor(0.85);
 							ball->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 							break;
 						}
@@ -157,6 +153,7 @@ bool App::HandleKeyboard()
 							body->r = Random::Integer(0, 255);
 							body->g = Random::Integer(0, 255);
 							body->b = Random::Integer(0, 255);
+							body->SetBounceFactor(0.85);
 							body->SetFlags(PLNR_OBJ_FLAG_INFLUENCED_BY_GRAVITY);
 
 							std::vector<Vector2D> pointArray;
