@@ -42,6 +42,10 @@ namespace PlanarPhysics
 		void IntegrateOverArea(int resolution, std::function<void(const BoundingBox& subBox)> integralFunc);
 		BoundingBox Translated(const Vector2D& translation) const;
 		Vector2D RandomPoint() const;
+		Vector2D LowerLeft() const;
+		Vector2D LowerRight() const;
+		Vector2D UpperLeft() const;
+		Vector2D UpperRight() const;
 
 		Vector2D min, max;
 	};

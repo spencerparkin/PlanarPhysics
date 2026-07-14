@@ -100,6 +100,11 @@ bool RigidBody::MakeShape(const std::vector<Vector2D>& pointArray, double unifor
 	return true;
 }
 
+void RigidBody::InvalidateWorldPolygon() const
+{
+	this->worldPolygonValid = false;
+}
+
 bool RigidBody::ContainsPoint(const Vector2D& point) const
 {
 	this->UpdateWorldPolygonIfNeeded();

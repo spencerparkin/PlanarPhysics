@@ -34,6 +34,7 @@ namespace PlanarPhysics
 		bool ContainsPoint(const Vector2D& point) const;
 		void UpdateWorldPolygonIfNeeded() const;
 		const ConvexPolygon& GetWorldPolygon() const;
+		void InvalidateWorldPolygon() const;
 
 		Vector2D position;
 		PScalar2D orientation;

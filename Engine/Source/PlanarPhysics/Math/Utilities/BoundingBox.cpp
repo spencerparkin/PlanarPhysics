@@ -246,3 +246,23 @@ Vector2D BoundingBox::RandomPoint() const
 		Random::Number(this->min.y, this->max.y)
 	);
 }
+
+Vector2D BoundingBox::LowerLeft() const
+{
+	return this->min;
+}
+
+Vector2D BoundingBox::LowerRight() const
+{
+	return Vector2D(this->max.x, this->min.y);
+}
+
+Vector2D BoundingBox::UpperLeft() const
+{
+	return Vector2D(this->min.x, this->max.y);
+}
+
+Vector2D BoundingBox::UpperRight() const
+{
+	return this->max;
+}
